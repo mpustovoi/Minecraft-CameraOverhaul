@@ -1,36 +1,25 @@
 plugins {
 	id 'fabric-loom' version '1.6-SNAPSHOT'
-	id 'maven-publish'
+	//id 'maven-publish'
 }
 
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-version = project.mod_version
 group = project.maven_group
+version = project.mod_version
 
 base {
 	archivesName = project.archives_base_name
 }
 
-repositories {
-	maven {
-		url = "https://maven.terraformersmc.com/releases"
-	}
-	maven {
-		url "https://maven.shedaniel.me/"
+allprojects {
+	repositories {
+		maven { url "https://maven.terraformersmc.com/releases" }
+		maven { url "https://maven.shedaniel.me" }
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 	}
 }
 
 dependencies {
-	//to change the versions see the gradle.properties file
+	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
@@ -54,6 +43,15 @@ dependencies {
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
+loom {
+	mods {
+		"modid" {
+			sourceSet sourceSets.main
+			//sourceSet sourceSets.client
+		}
+	}
+}
+
 processResources {
 	inputs.property "version", project.version
 
@@ -62,34 +60,19 @@ processResources {
 	}
 }
 
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile) {
+// Use UTF-8 encoding everywhere.
+tasks.withType(JavaCompile).configureEach {
 	options.encoding = "UTF-8"
+	options.release = 21
+
 }
 
-jar {
-	from "LICENSE"
-}
+java {
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
+	// If you remove this line, sources will not be generated.
+	withSourcesJar()
 
-// configure the maven publication
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-		}
-	}
-
-	// select the repositories you want to publish to
-	repositories {
-		// uncomment to publish to the local maven
-		// mavenLocal()
-	}
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_1_8
 }
