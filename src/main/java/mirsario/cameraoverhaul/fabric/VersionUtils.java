@@ -1,10 +1,11 @@
+#if FABRIC_LOADER
 package mirsario.cameraoverhaul.fabric;
 
 import java.text.*;
+import mirsario.cameraoverhaul.*;
 import net.fabricmc.loader.api.*;
 import net.fabricmc.loader.api.metadata.*;
 import net.fabricmc.loader.api.metadata.version.*;
-import mirsario.cameraoverhaul.common.*;
 
 public final class VersionUtils
 {
@@ -32,3 +33,4 @@ public final class VersionUtils
 		}
 	}
 }
+#endif

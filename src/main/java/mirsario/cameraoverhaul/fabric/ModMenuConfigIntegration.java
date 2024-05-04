@@ -1,38 +1,55 @@
+#if FABRIC_LOADER
 package mirsario.cameraoverhaul.fabric;
 
 import java.util.function.*;
-import com.terraformersmc.modmenu.api.*;
 import me.shedaniel.clothconfig2.api.*;
 import me.shedaniel.clothconfig2.gui.entries.*;
-import mirsario.cameraoverhaul.common.*;
-import mirsario.cameraoverhaul.common.configuration.*;
-import mirsario.cameraoverhaul.core.configuration.*;
-import mirsario.cameraoverhaul.core.utils.MathUtils;
-import mirsario.cameraoverhaul.fabric.abstractions.*;
+import mirsario.cameraoverhaul.*;
+import mirsario.cameraoverhaul.abstractions.*;
+import mirsario.cameraoverhaul.configuration.*;
+import mirsario.cameraoverhaul.utils.*;
 import net.minecraft.client.*;
+
+// Beyond annoying.
+#if MC_VERSION <= "11700"
+import io.github.prospector.modmenu.api.*;
+import net.minecraft.client.gui.screen.*;
+#else
+import com.terraformersmc.modmenu.api.*;
+#endif
 
 public class ModMenuConfigIntegration implements ModMenuApi
 {
 	private static final String configEntriesPrefix = "cameraoverhaul.config";
 
+#if MC_VERSION <= "11700"
+	public String getModId() {
+		return CameraOverhaul.Id;
+	}
+
+	public Function<Screen, ? extends Screen> getConfigScreenFactory() {
+		return screen -> GetConfigBuilder().build();
+	}
+#endif
+
 	@Override
-	public ConfigScreenFactory<?> getModConfigScreenFactory()
-	{
+	public ConfigScreenFactory<?> getModConfigScreenFactory() {
 		return screen -> GetConfigBuilder().build();
 	}
 	
 	@SuppressWarnings("resource") // MinecraftClient.getInstance() isn't a resource
 	public static ConfigBuilder GetConfigBuilder()
 	{
+		CameraOverhaul.Logger.info("Opening config screen.");
 		ConfigData config = CameraOverhaul.instance.config;
 		
 		ConfigBuilder builder = ConfigBuilder.create()
 			.setParentScreen(MinecraftClient.getInstance().currentScreen)
-			.setTitle(TextAbstractions.CreateText("cameraoverhaul.config.title"))
+			.setTitle(getText("cameraoverhaul.config.title"))
 			.transparentBackground()
 			.setSavingRunnable(() -> Configuration.SaveConfig(CameraOverhaul.instance.config, CameraOverhaul.Id, ConfigData.ConfigVersion));
 		
-		ConfigCategory general = builder.getOrCreateCategory(TextAbstractions.CreateText("cameraoverhaul.config.category.general"));
+		ConfigCategory general = builder.getOrCreateCategory(getText("cameraoverhaul.config.category.general"));
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 		
 		// Entries
@@ -67,10 +84,10 @@ public class ModMenuConfigIntegration implements ModMenuApi
 		String lowerCaseName = entryName.toLowerCase();
 		String baseTranslationPath = configEntriesPrefix + "." + lowerCaseName;
 
-		return entryBuilder.startBooleanToggle(TextAbstractions.CreateText(baseTranslationPath + ".name"), value)
+		return entryBuilder.startBooleanToggle(getText(baseTranslationPath + ".name"), value)
 			.setDefaultValue(defaultValue)
-			.setTooltip(TextAbstractions.CreateText(baseTranslationPath + ".tooltip"))
-			.setSaveConsumer(newValue -> setter.apply(newValue))
+			.setTooltip(getText(baseTranslationPath + ".tooltip"))
+			.setSaveConsumer(setter::apply)
 			.build();
 	}
 
@@ -79,10 +96,21 @@ public class ModMenuConfigIntegration implements ModMenuApi
 		String lowerCaseName = entryName.toLowerCase();
 		String baseTranslationPath = configEntriesPrefix + "." + lowerCaseName;
 
-		return entryBuilder.startFloatField(TextAbstractions.CreateText(baseTranslationPath + ".name"), value)
+		return entryBuilder.startFloatField(getText(baseTranslationPath + ".name"), value)
 			.setDefaultValue(defaultValue)
-			.setTooltip(TextAbstractions.CreateText(baseTranslationPath + ".tooltip"))
-			.setSaveConsumer(newValue -> setter.apply(newValue))
+			.setTooltip(getText(baseTranslationPath + ".tooltip"))
+			.setSaveConsumer(setter::apply)
 			.build();
 	}
+
+#if MC_VERSION >= "11700"
+	private static net.minecraft.text.Text getText(String key) {
+		return TextAbstractions.CreateText(key);
+	}
+#else
+	private static String getText(String key) {
+		return TextAbstractions.CreateText(key).getString();
+	}
+#endif
 }
+#endif

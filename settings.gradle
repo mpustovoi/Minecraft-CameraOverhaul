@@ -1,10 +1,19 @@
 pluginManagement {
 	repositories {
+		// Shared
 		mavenCentral()
+		gradlePluginPortal()
+
+		// Fabric
 		maven {
 			name = 'Fabric'
 			url = 'https://maven.fabricmc.net/'
 		}
-		gradlePluginPortal()
 	}
 }
+
+include ":projects:fabric:[1.14.0-1.14.4]"
+include ":projects:fabric:[1.15.0-1.16.5]"
+include ":projects:fabric:[1.17.0-1.18.2]"
+include ":projects:fabric:[1.19.0-1.19.2]"
+include ":projects:fabric:[1.19.3-1.20.4]"

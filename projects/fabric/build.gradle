@@ -1,0 +1,56 @@
+plugins {
+	id 'fabric-loom' version '1.6-SNAPSHOT' apply false
+}
+
+subprojects {
+	apply plugin: 'fabric-loom'
+
+	repositories {
+		maven { url "https://maven.shedaniel.me" }
+		maven { url "https://maven.terraformersmc.com/releases" }
+	}
+
+	def clothConfigMajor = project.cloth_config_version.split("\\.")[0].toInteger()
+
+	dependencies {
+		// To change the versions see the gradle.properties file
+		minecraft "com.mojang:minecraft:${project.minecraft_version}"
+		mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+		modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+
+		// Fabric API. This is technically optional, but you probably want it anyway.
+		//modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+		// Cloth Config
+		modApi("me.shedaniel.cloth:${clothConfigMajor <= 2 ? "config-2" : "cloth-config-fabric"}:${project.cloth_config_version}") {
+			// Prevent preparing two loader versions in cache. Not needed.
+			exclude(group: "net.fabricmc")
+			exclude(group: "net.fabricmc.fabric-api")
+		}
+		// include "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"
+
+		// Fabric Resource Loader (needed for localization, which Cloth Config needs)
+		// Actually not needed, because this is only used with ModMenu, and ModMenu includes it
+		//modApi(fabricApi.module("fabric-resource-loader-v0", project.fabric_version))
+		//include fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
+
+		// ModMenu API, to add the Config Screen to it
+		modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	}
+
+	loom {
+		mods {
+			"${project.properties.mod_id}" {
+				sourceSet sourceSets.main
+			}
+		}
+	}
+
+	processResources {
+		inputs.property "version", project.version
+
+		filesMatching("fabric.mod.json") {
+			expand "version": project.version
+		}
+	}
+}

@@ -1,7 +1,8 @@
+#if FABRIC_LOADER
 package mirsario.cameraoverhaul.fabric;
 
+import mirsario.cameraoverhaul.*;
 import net.fabricmc.api.*;
-import mirsario.cameraoverhaul.common.*;
 
 public class FabricClientModInitializer implements ClientModInitializer
 {
@@ -15,3 +16,4 @@ public class FabricClientModInitializer implements ClientModInitializer
 		CameraOverhaul.instance.onInitializeClient();
 	}
 }
+#endif

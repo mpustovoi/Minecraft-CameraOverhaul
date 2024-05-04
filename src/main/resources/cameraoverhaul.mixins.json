@@ -1,12 +1,10 @@
 {
-	"required": true,
+	"required": false,
 	"package": "mirsario.cameraoverhaul.fabric.mixins",
 	"compatibilityLevel": "JAVA_8",
-	"plugin": "mirsario.cameraoverhaul.fabric.mixins.MixinPlugin",
 	"mixins": [
-		"modern.CameraMixin",
-		"modern.GameRendererMixin",
-		"legacy.LegacyCameraMixin"
+		"CameraMixin",
+		"GameRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

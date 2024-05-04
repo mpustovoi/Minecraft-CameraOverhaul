@@ -1,78 +1,52 @@
-plugins {
-	id 'fabric-loom' version '1.6-SNAPSHOT'
-	//id 'maven-publish'
-}
-
-group = project.maven_group
-version = project.mod_version
-
-base {
-	archivesName = project.archives_base_name
-}
-
-allprojects {
-	repositories {
-		maven { url "https://maven.terraformersmc.com/releases" }
-		maven { url "https://maven.shedaniel.me" }
-		maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+ subprojects {
+	// Skip folders without a 'gradle.properties' file.
+	var hasProperties = new File(project.projectDir, "gradle.properties").exists()
+	if (!hasProperties) {
+		return
 	}
-}
 
-dependencies {
-	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	apply plugin: "java"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	//modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	base {
+		archivesName = project.properties.archives_base_name
+		version = "${project.properties.mod_version}-${project.properties.loader_name}-${project.name}"
+		group = project.properties.maven_group
 
-	// Cloth Config
-	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
-		exclude(group: "net.fabricmc.fabric-api")
-		exclude(group: "net.fabricmc") // Prevent preparing two loader versions in cache. Not needed
+		//layout.buildDirectory = new File(rootProject.projectDir, "build")
+		layout.buildDirectory = new File(rootProject.projectDir, "build/${project.properties.loader_name}-${project.name}")
 	}
-	// include "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"
 
-	// Fabric Resource Loader (needed for localization, which Cloth Config needs)
-	// Actually not needed, because this is only used with ModMenu, and ModMenu includes it
-	//modApi(fabricApi.module("fabric-resource-loader-v0", project.fabric_version))
-	//include fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
-
-	// ModMenu API, to add the Config Screen to it
-	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-}
-
-loom {
-	mods {
-		"modid" {
-			sourceSet sourceSets.main
-			//sourceSet sourceSets.client
-		}
+	// Subprojects use the same codebase, but different properties & preprocessor defines.
+	sourceSets {
+		main.java.srcDirs = [ new File(rootProject.projectDir, "src/main/java").absolutePath ]
+		main.resources.srcDirs = [ new File(rootProject.projectDir, "src/main/resources").absolutePath ]
 	}
-}
 
-processResources {
-	inputs.property "version", project.version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
-}
-
-// Use UTF-8 encoding everywhere.
-tasks.withType(JavaCompile).configureEach {
-	options.encoding = "UTF-8"
-	options.release = 21
-
-}
-
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_21
+	// Language version.
+	sourceCompatibility = JavaVersion.VERSION_17
 	targetCompatibility = JavaVersion.VERSION_1_8
+	tasks.withType(JavaCompile) {
+		options.encoding = "UTF-8"
+		options.release = 17
+	}
+
+	// Shared dependencies.
+	dependencies {
+		annotationProcessor 'systems.manifold:manifold-preprocessor:2024.1.1'
+	}
+
+	def mcVersionSplit = project.properties.minecraft_version.split("\\.")
+	def mcVersionMajor = mcVersionSplit[0]
+	def mcVersionMain = mcVersionSplit[1]
+	def mcVersionMinor = mcVersionSplit.size() >= 3 ? (mcVersionSplit[2] as String).padLeft(2, '0') : '00'
+	def merged_mc_version = "$mcVersionMajor$mcVersionMain$mcVersionMinor"
+
+	tasks.withType(JavaCompile).forEach {
+		// Enable & configure manifold
+		it.options.compilerArgs += [
+			'-Xplugin:Manifold',
+			"-AMC_VERSION=${merged_mc_version}",
+			"-A${project.properties.loader_name.toUpperCase()}_LOADER"
+		]
+	}
 }
