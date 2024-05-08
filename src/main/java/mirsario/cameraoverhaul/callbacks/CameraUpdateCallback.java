@@ -1,8 +1,8 @@
 package mirsario.cameraoverhaul.callbacks;
 
 import mirsario.cameraoverhaul.structures.*;
-import net.minecraft.client.render.*;
-import net.minecraft.entity.*;
+import net.minecraft.client.*;
+import net.minecraft.world.entity.*;
 
 public interface CameraUpdateCallback
 {

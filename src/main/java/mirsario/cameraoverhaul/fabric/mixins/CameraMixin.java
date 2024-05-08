@@ -1,9 +1,9 @@
-#if FABRIC_LOADER
+#if !FABRIC_LOADER
 package mirsario.cameraoverhaul.fabric.mixins;
 
 import mirsario.cameraoverhaul.callbacks.*;
 import mirsario.cameraoverhaul.structures.*;
-import net.minecraft.client.render.*;
+import net.minecraft.client.*;
 import net.minecraft.entity.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;

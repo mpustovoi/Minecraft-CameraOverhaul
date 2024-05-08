@@ -13,7 +13,7 @@ import net.minecraft.client.*;
 // Beyond annoying.
 #if MC_VERSION <= "11700"
 import io.github.prospector.modmenu.api.*;
-import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.gui.screens.*;
 #else
 import com.terraformersmc.modmenu.api.*;
 #endif
@@ -44,7 +44,7 @@ public class ModMenuConfigIntegration implements ModMenuApi
 		ConfigData config = CameraOverhaul.instance.config;
 		
 		ConfigBuilder builder = ConfigBuilder.create()
-			.setParentScreen(MinecraftClient.getInstance().currentScreen)
+			.setParentScreen(Minecraft.getInstance().screen)
 			.setTitle(getText("cameraoverhaul.config.title"))
 			.transparentBackground()
 			.setSavingRunnable(() -> Configuration.SaveConfig(CameraOverhaul.instance.config, CameraOverhaul.Id, ConfigData.ConfigVersion));
@@ -104,7 +104,7 @@ public class ModMenuConfigIntegration implements ModMenuApi
 	}
 
 #if MC_VERSION >= "11700"
-	private static net.minecraft.text.Text getText(String key) {
+	private static net.minecraft.network.chat.Component getText(String key) {
 		return TextAbstractions.CreateText(key);
 	}
 #else

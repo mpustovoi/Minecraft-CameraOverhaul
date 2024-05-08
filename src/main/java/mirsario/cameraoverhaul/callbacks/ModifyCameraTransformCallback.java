@@ -1,7 +1,7 @@
 package mirsario.cameraoverhaul.callbacks;
 
 import mirsario.cameraoverhaul.structures.*;
-import net.minecraft.client.render.*;
+import net.minecraft.client.*;
 
 public interface ModifyCameraTransformCallback
 {
