@@ -1,7 +1,6 @@
- subprojects {
-	// Skip folders without a 'gradle.properties' file.
-	var hasProperties = new File(project.projectDir, "gradle.properties").exists()
-	if (!hasProperties) {
+subprojects {
+	// Skip projects that don't declare a MC version.
+	if (project.properties.minecraft_version == null) {
 		return
 	}
 
@@ -22,12 +21,16 @@
 		main.resources.srcDirs = [ new File(rootProject.projectDir, "src/main/resources").absolutePath ]
 	}
 
-	// Language version.
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_1_8
+	java {
+		// Language version.
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_1_8
+		// Produce a sources jar.
+		withSourcesJar()
+	}
 	tasks.withType(JavaCompile) {
 		options.encoding = "UTF-8"
-		options.release = 17
+		options.release = 17 // Also language version.
 	}
 
 	// Shared dependencies.
@@ -46,7 +49,9 @@
 		it.options.compilerArgs += [
 			'-Xplugin:Manifold',
 			"-AMC_VERSION=${merged_mc_version}",
-			"-A${project.properties.loader_name.toUpperCase()}_LOADER"
+			"-AMC_${project.properties.minecraft_type.toUpperCase()}",
+			"-A${project.properties.loader_name.toUpperCase()}_LOADER",
+			"-A${project.properties.loader_type.toUpperCase()}_LOADER"
 		]
 	}
 }

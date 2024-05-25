@@ -1,55 +1,60 @@
-#if !FABRIC_LOADER
+#if FABRIC_LOADER && !MC_BTA
 package mirsario.cameraoverhaul.fabric.mixins;
 
-import mirsario.cameraoverhaul.callbacks.*;
-import mirsario.cameraoverhaul.structures.*;
+import mirsario.cameraoverhaul.*;
+import mirsario.cameraoverhaul.utilities.*;
 import net.minecraft.client.*;
-import net.minecraft.entity.*;
-import net.minecraft.util.math.*;
-import net.minecraft.world.*;
+import org.joml.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
-#if !MC_VERSION >= "11500"
+import net.minecraft.world.*;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.level.*;
+import net.minecraft.world.phys.*;
+#if MC_VERSION < "11500"
 import org.lwjgl.opengl.*;
 #endif
 
 @Mixin(Camera.class)
 public abstract class CameraMixin
 {
-	@Shadow public abstract float getYaw();
-	@Shadow public abstract float getPitch();
-	@Shadow public abstract Vec3d getPos();
+	@Shadow public abstract float getXRot();
+	@Shadow public abstract float getYRot();
+	@Shadow public abstract Vec3 getPosition();
 	@Shadow protected abstract void setRotation(float yaw, float pitch);
 
-	@Inject(method = "update", at = @At("RETURN"))
-	private void OnCameraUpdate(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci)
+	@Inject(method = "setup", at = @At("RETURN"))
+	private void OnCameraUpdate(BlockGetter area, Entity entity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci)
 	{
-#if MC_VERSION >= "11500"
-		Transform cameraTransform = new Transform(getPos(), new Vec3d(getPitch(), getYaw(), 0d));
+		var system = CameraOverhaul.instance.system;
+		var context = new CameraContext();
+		context.velocity = VectorUtils.toJoml(entity.getDeltaMovement());
+		context.transform = new Transform(
+			VectorUtils.toJoml(getPosition()),
+			new Vector3f(getXRot(), getYRot(), 0)
+		);
+		if (entity instanceof LivingEntity) {
+			context.isFlying = ((LivingEntity)entity).isFallFlying();
+			context.isSwimming = ((LivingEntity)entity).isSwimming();
+		}
 
-		CameraUpdateCallback.EVENT.Invoker().OnCameraUpdate(focusedEntity, (Camera)(Object)this, cameraTransform, tickDelta);
-
-		cameraTransform = ModifyCameraTransformCallback.EVENT.Invoker().ModifyCameraTransform((Camera)(Object)this, cameraTransform);
-
-		setRotation((float)cameraTransform.eulerRot.y, (float)cameraTransform.eulerRot.x);
-#else
-		Transform cameraTransform = new Transform(getPos(), new Vec3d(getPitch(), getYaw(), 0d));
-
+#if MC_VERSION < "11500"
 		// Undo multiplications.
-		GL11.glRotatef((float)cameraTransform.eulerRot.y + 180.0f, 0f, -1f, 0f);
-		GL11.glRotatef((float)cameraTransform.eulerRot.x, -1f, 0f, 0f);
+		GL11.glRotatef((float)context.transform.eulerRot.y + 180.0f, 0f, -1f, 0f);
+		GL11.glRotatef((float)context.transform.eulerRot.x, -1f, 0f, 0f);
+#endif
 
-		CameraUpdateCallback.EVENT.Invoker().OnCameraUpdate(focusedEntity, (Camera)(Object)this, cameraTransform, tickDelta);
+		system.OnCameraUpdate(context, tickDelta);
+		system.ModifyCameraTransform(context.transform);
 
-		cameraTransform = ModifyCameraTransformCallback.EVENT.Invoker().ModifyCameraTransform((Camera)(Object)this, cameraTransform);
+		setRotation((float)context.transform.eulerRot.y, (float)context.transform.eulerRot.x);
 
-		setRotation((float)cameraTransform.eulerRot.y, (float)cameraTransform.eulerRot.x);
-
+#if MC_VERSION < "11500"
 		// And now redo them.
-		GL11.glRotatef((float)cameraTransform.eulerRot.z, 0f, 0f, 1f);
-		GL11.glRotatef((float)cameraTransform.eulerRot.x, 1f, 0f, 0f);
-		GL11.glRotatef((float)cameraTransform.eulerRot.y + 180f, 0f, 1f, 0f);
+		GL11.glRotatef((float)context.transform.eulerRot.z, 0f, 0f, 1f);
+		GL11.glRotatef((float)context.transform.eulerRot.x, 1f, 0f, 0f);
+		GL11.glRotatef((float)context.transform.eulerRot.y + 180f, 0f, 1f, 0f);
 #endif
 	}
 }

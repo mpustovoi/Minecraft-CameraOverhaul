@@ -1,4 +1,4 @@
-package mirsario.cameraoverhaul.utils;
+package mirsario.cameraoverhaul.utilities;
 
 public final class MathUtils
 {

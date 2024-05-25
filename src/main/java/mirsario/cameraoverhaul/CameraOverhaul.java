@@ -11,13 +11,12 @@ public final class CameraOverhaul
 	
 	public static final String Id = "cameraoverhaul";
 	
-	public CameraSystem cameraSystem;
+	public CameraSystem system;
 	public ConfigData config;
 
 	public void onInitializeClient()
 	{
 		config = Configuration.LoadConfig(ConfigData.class, Id, ConfigData.ConfigVersion);
-
-		cameraSystem = new CameraSystem();
+		system = new CameraSystem();
 	}
 }

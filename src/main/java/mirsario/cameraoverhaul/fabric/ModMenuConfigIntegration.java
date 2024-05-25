@@ -1,4 +1,4 @@
-#if FABRIC_LOADER
+#if FABRIC_LOADER && MC_RELEASE
 package mirsario.cameraoverhaul.fabric;
 
 import java.util.function.*;
@@ -7,7 +7,7 @@ import me.shedaniel.clothconfig2.gui.entries.*;
 import mirsario.cameraoverhaul.*;
 import mirsario.cameraoverhaul.abstractions.*;
 import mirsario.cameraoverhaul.configuration.*;
-import mirsario.cameraoverhaul.utils.*;
+import mirsario.cameraoverhaul.utilities.*;
 import net.minecraft.client.*;
 
 // Beyond annoying.
