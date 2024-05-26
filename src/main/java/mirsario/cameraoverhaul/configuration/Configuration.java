@@ -6,24 +6,21 @@ import java.nio.file.*;
 import mirsario.cameraoverhaul.*;
 import net.fabricmc.loader.api.*;
 
-public final class Configuration
-{
-	private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	
-	private static final Path configPath = FabricLoader.getInstance().getConfigDir();
+public final class Configuration {
+	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir();
 
-	public static <T extends BaseConfigData> T LoadConfig(Class<T> tClass, String configName, int configVersion)
-	{
+	public static <T extends BaseConfigData> T loadConfig(Class<T> tClass, String configName, int configVersion) {
 		T configData = null;
-		Path configFile = configPath.resolve(configName + ".json");
+		Path configFile = CONFIG_PATH.resolve(configName + ".json");
 		boolean saveConfig = false;
 		
 		try {
-			Files.createDirectories(configPath);
+			Files.createDirectories(CONFIG_PATH);
 
 			if (Files.exists(configFile)) {
 				BufferedReader fileReader = Files.newBufferedReader(configFile);
-				configData = gson.fromJson(fileReader, tClass);
+				configData = GSON.fromJson(fileReader, tClass);
 				fileReader.close();
 				
 				// Save the config on first runs of new versions.
@@ -35,25 +32,25 @@ public final class Configuration
 				saveConfig = true;
 			}
 		} catch(Exception e) {
-			CameraOverhaul.Logger.error("Error when initializing config", e);
+			CameraOverhaul.LOGGER.error("Error when initializing config", e);
 		}
 		
 		if (saveConfig) {
-			SaveConfig(configData, configName, configVersion);
+			saveConfig(configData, configName, configVersion);
 		}
 		
 		return configData;
 	}
 	
-	public static <T extends BaseConfigData> void SaveConfig(T configData, String configName, int configVersion) {
-		Path configFile = configPath.resolve(configName+".json");
+	public static <T extends BaseConfigData> void saveConfig(T configData, String configName, int configVersion) {
+		Path configFile = CONFIG_PATH.resolve(configName+".json");
 		
 		configData.configVersion = configVersion;
 		
 		try (BufferedWriter writer = Files.newBufferedWriter(configFile)){
-			writer.write(gson.toJson(configData));
+			writer.write(GSON.toJson(configData));
 		} catch (IOException e) {
-			CameraOverhaul.Logger.error("Couldn't save config file", e);
+			CameraOverhaul.LOGGER.error("Couldn't save config file", e);
 		}
 	}
 }

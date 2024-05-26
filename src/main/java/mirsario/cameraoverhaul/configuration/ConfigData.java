@@ -1,8 +1,7 @@
 package mirsario.cameraoverhaul.configuration;
 
-public class ConfigData extends BaseConfigData
-{
-	public static final int ConfigVersion = 1;
+public class ConfigData extends BaseConfigData {
+	public static final int CONFIG_VERSION = 1;
 
 	public boolean enabled = true;
 	// Roll factors

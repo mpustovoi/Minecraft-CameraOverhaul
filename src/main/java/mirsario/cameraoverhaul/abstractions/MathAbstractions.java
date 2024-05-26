@@ -11,10 +11,9 @@ import org.joml.*;
 #endif
 #endif
 
-public final class MathAbstractions
-{
+public final class MathAbstractions {
 #if MC_RELEASE && MC_VERSION >= "11500"
-	public static void RotateMatrixByAxis(com.mojang.blaze3d.vertex.PoseStack matrix, float axisX, float axisY, float axisZ, float rotation) {
+	public static void rotateMatrixByAxis(com.mojang.blaze3d.vertex.PoseStack matrix, float axisX, float axisY, float axisZ, float rotation) {
 #if MC_VERSION >= "11903"
 		matrix.mulPose(Axis.of(new Vector3f(axisX, axisY, axisZ)).rotationDegrees(rotation));
 #else

@@ -7,9 +7,10 @@ import mirsario.cameraoverhaul.*;
 import java.util.*;
 
 public class MixinPlugin implements IMixinConfigPlugin {
-    private static final String mixinsPackage = "mirsario.cameraoverhaul.fabric.mixins";
-    private static final String[] mixins = new String[] {
+    private static final String MIXINS_PACKAGE = "mirsario.cameraoverhaul.fabric.mixins";
+    private static final String[] MIXINS = new String[] {
         "CameraMixin",
+        "CameraMixinBta",
         "GameRendererMixin",
     };
 
@@ -39,14 +40,14 @@ public class MixinPlugin implements IMixinConfigPlugin {
 	public List<String> getMixins() {
         var list = new ArrayList<String>();
 
-        for (String mixin : mixins) {
-            String mixinClassName = mixinsPackage + "." + mixin;
+        for (String mixin : MIXINS) {
+            String mixinClassName = MIXINS_PACKAGE + "." + mixin;
             try {
                 Class.forName(mixinClassName, false, getClass().getClassLoader());
-                CameraOverhaul.Logger.info("Applying present mixin: '" + mixinClassName + "'.");
+                CameraOverhaul.LOGGER.info("Applying present mixin: '" + mixinClassName + "'.");
                 list.add(mixin);
             } catch (ClassNotFoundException ignored) {
-                CameraOverhaul.Logger.info("Skipping missing mixin: '" + mixinClassName + "'.");
+                CameraOverhaul.LOGGER.info("Skipping missing mixin: '" + mixinClassName + "'.");
             }
         }
 

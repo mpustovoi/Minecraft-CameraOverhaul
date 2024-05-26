@@ -17,16 +17,14 @@ import org.lwjgl.opengl.*;
 #endif
 
 @Mixin(Camera.class)
-public abstract class CameraMixin
-{
+public abstract class CameraMixin {
 	@Shadow public abstract float getXRot();
 	@Shadow public abstract float getYRot();
 	@Shadow public abstract Vec3 getPosition();
 	@Shadow protected abstract void setRotation(float yaw, float pitch);
 
 	@Inject(method = "setup", at = @At("RETURN"))
-	private void OnCameraUpdate(BlockGetter area, Entity entity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci)
-	{
+	private void onCameraUpdate(BlockGetter area, Entity entity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
 		var system = CameraOverhaul.instance.system;
 		var context = new CameraContext();
 		context.velocity = VectorUtils.toJoml(entity.getDeltaMovement());
@@ -45,8 +43,8 @@ public abstract class CameraMixin
 		GL11.glRotatef((float)context.transform.eulerRot.x, -1f, 0f, 0f);
 #endif
 
-		system.OnCameraUpdate(context, tickDelta);
-		system.ModifyCameraTransform(context.transform);
+		system.onCameraUpdate(context, tickDelta);
+		system.modifyCameraTransform(context.transform);
 
 		setRotation((float)context.transform.eulerRot.y, (float)context.transform.eulerRot.x);
 

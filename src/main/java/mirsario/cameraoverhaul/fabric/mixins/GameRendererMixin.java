@@ -15,21 +15,20 @@ import org.joml.*;
 
 @Mixin(GameRenderer.class)
 @SuppressWarnings("UnusedMixin")
-public abstract class GameRendererMixin
-{
+public abstract class GameRendererMixin {
 	@Shadow @Final private Camera mainCamera;
 
 	@Inject(method = "bobHurt", at = @At("HEAD"))
-	private void PostCameraUpdate(PoseStack matrices, float f, CallbackInfo ci)
-	{
+	private void postCameraUpdate(PoseStack matrices, float f, CallbackInfo ci) {
 		Transform cameraTransform = new Transform(
 			VectorUtils.toJoml(mainCamera.getPosition()),
 			new Vector3f(mainCamera.getXRot(), mainCamera.getYRot(), 0)
 		);
 
-		CameraOverhaul.instance.system.ModifyCameraTransform(cameraTransform);
+		CameraOverhaul.instance.system.modifyCameraTransform(cameraTransform);
 
-		MathAbstractions.RotateMatrixByAxis(matrices, 0f, 0f, 1f, (float)cameraTransform.eulerRot.z);
+		//matrix.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion((float)cameraTransform.eulerRot.z));
+		MathAbstractions.rotateMatrixByAxis(matrices, 0f, 0f, 1f, (float)cameraTransform.eulerRot.z);
 	}
 }
 #endif
