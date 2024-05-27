@@ -6,6 +6,6 @@ import org.joml.*;
 public class CameraContext {
 	public boolean isSwimming;
 	public boolean isFlying;
-	public Vector3f velocity;
+	public Vector3d velocity;
 	public Transform transform = new Transform();
 }

@@ -22,13 +22,13 @@ public abstract class GameRendererMixin {
 	private void postCameraUpdate(PoseStack matrices, float f, CallbackInfo ci) {
 		Transform cameraTransform = new Transform(
 			VectorUtils.toJoml(mainCamera.getPosition()),
-			new Vector3f(mainCamera.getXRot(), mainCamera.getYRot(), 0)
+			new Vector3d(mainCamera.getXRot(), mainCamera.getYRot(), 0)
 		);
 
 		CameraOverhaul.instance.system.modifyCameraTransform(cameraTransform);
 
 		//matrix.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion((float)cameraTransform.eulerRot.z));
-		MathAbstractions.rotateMatrixByAxis(matrices, 0f, 0f, 1f, (float)cameraTransform.eulerRot.z);
+		MathAbstractions.rotateMatrixByAxis(matrices, 0f, 0f, 1f, cameraTransform.eulerRot.z);
 	}
 }
 #endif

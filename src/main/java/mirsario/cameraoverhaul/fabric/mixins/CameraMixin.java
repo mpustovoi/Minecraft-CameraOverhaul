@@ -30,7 +30,7 @@ public abstract class CameraMixin {
 		context.velocity = VectorUtils.toJoml(entity.getDeltaMovement());
 		context.transform = new Transform(
 			VectorUtils.toJoml(getPosition()),
-			new Vector3f(getXRot(), getYRot(), 0)
+			new Vector3d(getXRot(), getYRot(), 0)
 		);
 		if (entity instanceof LivingEntity) {
 			context.isFlying = ((LivingEntity)entity).isFallFlying();
