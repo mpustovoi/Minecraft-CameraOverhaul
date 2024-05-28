@@ -43,7 +43,8 @@ public abstract class CameraMixin {
 		GL11.glRotatef((float)context.transform.eulerRot.x, -1f, 0f, 0f);
 #endif
 
-		system.onCameraUpdate(context, tickDelta);
+		TimeSystem.update();
+		system.onCameraUpdate(context, TimeSystem.getDeltaTime());
 		system.modifyCameraTransform(context.transform);
 
 		setRotation((float)context.transform.eulerRot.y, (float)context.transform.eulerRot.x);

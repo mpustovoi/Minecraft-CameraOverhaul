@@ -13,8 +13,8 @@ public class ConfigData extends BaseConfigData {
 	public float verticalVelocityPitchFactor = 1.0f;
 	public float forwardVelocityPitchFactor = 1.0f;
 	// Smoothing factors
-	public float horizontalVelocitySmoothingFactor = 0.8f;
-	public float verticalVelocitySmoothingFactor = 0.8f;
-	public float yawDeltaSmoothingFactor = 0.8f;
-	public float yawDeltaDecayFactor = 0.5f;
+	public float horizontalVelocitySmoothingFactor = 1.0f;
+	public float verticalVelocitySmoothingFactor = 1.0f;
+	public float yawDeltaSmoothingFactor = 1.0f;
+	public float yawDeltaDecayFactor = 1.0f;
 }

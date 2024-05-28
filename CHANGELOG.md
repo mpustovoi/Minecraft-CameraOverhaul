@@ -3,6 +3,7 @@
 
 | Version									| Release Date |
 | ----------------------------------------- | ------------ |
+| [WIP](#wip)                               | `n/a`        |
 | [1.4.1](#141)                             | `2024.06.18` |
 | [1.4.0](#140)                             | `2022.12.27` |
 | [1.3.1](#131)								| `2022.07.23` |
@@ -14,6 +15,13 @@
 | [1.0.1](#101)								| `2020.12.06` |
 | [1.0.0](#100)								| `2020.11.30` |
 
+# WIP
+
+- The mod has been semi-rewritten with easier maintenance & scaling as a goal. Single-JAR version agnosticism based on 'reflection spam' has been sacrificed in favor of separate JARs tied to specific MC version ranges produced out of a single codebase using preprocessors. An effort will still be made to support as many versions of Minecraft as possible, out of one codebase.
+- Fixed the mod using incorrect values for time deltas. Oopsie doopsie.
+- Base intensity values modified once again. Default values are now all set to 1.0.
+- Russian config localization, courtesy of `@mpustovoi`.
+
 # Work In Progress
 Nothing so far?
 
@@ -22,6 +30,7 @@ Nothing so far?
 - ClothConfig2 is now recommended instead of required, same as ModMenu.
 
 # 1.4.0
+
 - Added compatibility with Minecraft `1.19.3`+.
 - Replaced all use of linear interpolation with a framerate-independent damping algorithm. Effects will no longer reduce in intensity on higher framerates, and will react to lagspikes slightly better.
 - New default settings are a bit more balanced and friendlier to the average player.
