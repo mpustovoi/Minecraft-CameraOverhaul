@@ -15,6 +15,7 @@
 
 # Work In Progress
 - Added compatibility with Minecraft `1.20.6`+ and `1.21`+ (Thanks, **@sam-mccarthy**!)
+- ClothConfig2 is now recommended instead of required, same as ModMenu.
 
 # 1.4.0
 - Added compatibility with Minecraft `1.19.3`+.
