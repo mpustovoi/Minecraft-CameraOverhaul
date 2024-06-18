@@ -3,6 +3,7 @@
 
 | Version									| Release Date |
 | ----------------------------------------- | ------------ |
+| [1.4.1](#141)                             | `2024.06.18` |
 | [1.4.0](#140)                             | `2022.12.27` |
 | [1.3.1](#131)								| `2022.07.23` |
 | [1.3.0](#130)								| `2021.10.21` |
@@ -14,6 +15,9 @@
 | [1.0.0](#100)								| `2020.11.30` |
 
 # Work In Progress
+Nothing so far?
+
+# 1.4.1
 - Added compatibility with Minecraft `1.20.6`+ and `1.21`+ (Thanks, **@sam-mccarthy**!)
 - ClothConfig2 is now recommended instead of required, same as ModMenu.
 
