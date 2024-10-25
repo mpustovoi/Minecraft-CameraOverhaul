@@ -10,10 +10,9 @@ public final class CameraOverhaul {
 	public static final Logger LOGGER = LogManager.getLogger("CameraOverhaul");
 
 	public CameraSystem system;
-	public ConfigData config;
 
 	public void onInitializeClient() {
-		config = Configuration.loadConfig(ConfigData.class, MOD_ID, ConfigData.CONFIG_VERSION);
+		Configuration.loadConfig();
 		system = new CameraSystem();
 	}
 }

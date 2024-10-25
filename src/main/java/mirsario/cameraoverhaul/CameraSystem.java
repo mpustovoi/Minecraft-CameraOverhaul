@@ -17,6 +17,7 @@ public final class CameraSystem {
 	private static final double BASE_STRAFING_ROLL_MULTIPLIER = 14.00d;
 	private static final double BASE_STRAFING_ROLL_SMOOTHING = BASE_HORIZONTAL_VELOCITY_SMOOTHING;
 
+	private ConfigData config;
 	private double prevForwardVelocityPitchOffset;
 	private double prevVerticalVelocityPitchOffset;
 	private double prevStrafingRollOffset;
@@ -24,11 +25,10 @@ public final class CameraSystem {
 	//private double prevTurningRollOffset;
 	private double turningRollOffset;
 	private double turningRollTargetOffset;
-	private ConfigData config;
 	private final Transform offsetTransform = new Transform();
 
 	public void onCameraUpdate(CameraContext context, double deltaTime) {
-		config = CameraOverhaul.instance.config;
+		config = Configuration.get();
 
 		// Reset the offset transform
 		offsetTransform.position = new Vector3d(0, 0, 0);

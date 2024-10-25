@@ -1,56 +1,47 @@
 package mirsario.cameraoverhaul.configuration;
 
-import com.google.gson.*;
+import com.moandjiezana.toml.*;
 import java.io.*;
 import java.nio.file.*;
 import mirsario.cameraoverhaul.*;
 import net.fabricmc.loader.api.*;
 
 public final class Configuration {
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir();
+	private static final Path CONFIG_DIR = FabricLoader.getInstance().getConfigDir();
+	private static final Path CONFIG_PATH = CONFIG_DIR.resolve(CameraOverhaul.MOD_ID + ".toml");
+	private static final Toml TOML = new Toml();
+	private static ConfigData configData;
 
-	public static <T extends BaseConfigData> T loadConfig(Class<T> tClass, String configName, int configVersion) {
-		T configData = null;
-		Path configFile = CONFIG_PATH.resolve(configName + ".json");
-		boolean saveConfig = false;
-		
-		try {
-			Files.createDirectories(CONFIG_PATH);
-
-			if (Files.exists(configFile)) {
-				BufferedReader fileReader = Files.newBufferedReader(configFile);
-				configData = GSON.fromJson(fileReader, tClass);
-				fileReader.close();
-				
-				// Save the config on first runs of new versions.
-				if (configData.configVersion < configVersion) {
-					saveConfig = true;
-				}
-			} else {
-				configData = (T)tClass.getDeclaredConstructor().newInstance();
-				saveConfig = true;
-			}
-		} catch(Exception e) {
-			CameraOverhaul.LOGGER.error("Error when initializing config", e);
-		}
-		
-		if (saveConfig) {
-			saveConfig(configData, configName, configVersion);
-		}
-		
+	public static ConfigData get() {
 		return configData;
 	}
+
+	public static void loadConfig() {
+		var file = CONFIG_PATH.toFile();
+
+		try {
+			Files.createDirectories(CONFIG_DIR);
+
+			if (file.exists()) {
+				configData = TOML.read(file).to(ConfigData.class);
+			} else {
+				configData = new ConfigData();
+			}
+		} catch (Exception e) {
+			configData = new ConfigData();
+			CameraOverhaul.LOGGER.error("Failed to load config file", e);
+		}
+
+		saveConfig();
+	}
 	
-	public static <T extends BaseConfigData> void saveConfig(T configData, String configName, int configVersion) {
-		Path configFile = CONFIG_PATH.resolve(configName+".json");
-		
-		configData.configVersion = configVersion;
-		
-		try (BufferedWriter writer = Files.newBufferedWriter(configFile)){
-			writer.write(GSON.toJson(configData));
+	public static void saveConfig() {
+		configData.configVersion = ConfigData.CONFIG_VERSION;
+
+		try (BufferedWriter writer = Files.newBufferedWriter(CONFIG_PATH)) {
+			new TomlWriter().write(configData, writer);
 		} catch (IOException e) {
-			CameraOverhaul.LOGGER.error("Couldn't save config file", e);
+			CameraOverhaul.LOGGER.error("Failed to save config file", e);
 		}
 	}
 }

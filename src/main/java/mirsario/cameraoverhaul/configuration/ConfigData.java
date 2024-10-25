@@ -1,10 +1,11 @@
 package mirsario.cameraoverhaul.configuration;
 
-public class ConfigData extends BaseConfigData {
-	public static final int CONFIG_VERSION = 1;
+public class ConfigData {
+	public static final int CONFIG_VERSION = 2;
 
 	public boolean enabled = true;
-	// Roll factors
+	public int configVersion;
+	// Roll
 	public float strafingRollFactor = 1.0f;
 	public float strafingRollFactorWhenFlying = -1.0f;
 	public float strafingRollFactorWhenSwimming = -1.0f;

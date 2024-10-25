@@ -36,18 +36,18 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
 		return screen -> getConfigBuilder().build();
 	}
-	
-	@SuppressWarnings("resource") // MinecraftClient.getInstance() isn't a resource
+
 	public static ConfigBuilder getConfigBuilder() {
 		CameraOverhaul.LOGGER.info("Opening config screen.");
-		ConfigData config = CameraOverhaul.instance.config;
-		ConfigBuilder builder = ConfigBuilder.create()
+		ConfigData config = Configuration.get();
 
+		ConfigBuilder builder = (ConfigBuilder.create()
 			.setParentScreen(Minecraft.getInstance().screen)
 			.setTitle(getText("cameraoverhaul.config.title"))
 			.transparentBackground()
-			.setSavingRunnable(() -> Configuration.saveConfig(CameraOverhaul.instance.config, CameraOverhaul.MOD_ID, ConfigData.CONFIG_VERSION));
-		
+			.setSavingRunnable(Configuration::saveConfig)
+		);
+
 		ConfigCategory general = builder.getOrCreateCategory(getText("cameraoverhaul.config.category.general"));
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
@@ -61,7 +61,7 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 		// Pitch factors
 		general.addEntry(createFloatFactorEntry(entryBuilder, "verticalVelocityPitchFactor", 1.0f, config.verticalVelocityPitchFactor, value -> config.verticalVelocityPitchFactor = value));
 		general.addEntry(createFloatFactorEntry(entryBuilder, "forwardVelocityPitchFactor", 1.0f, config.forwardVelocityPitchFactor, value -> config.forwardVelocityPitchFactor = value));
-		
+
 		// Smoothing factors
 		general.addEntry(createFloatFactorEntry(entryBuilder, "horizontalVelocitySmoothingFactor", 0.8f, clampSmoothness(config.horizontalVelocitySmoothingFactor), value -> config.horizontalVelocitySmoothingFactor = clampSmoothness(value)));
 		general.addEntry(createFloatFactorEntry(entryBuilder, "verticalVelocitySmoothingFactor", 0.8f, clampSmoothness(config.verticalVelocitySmoothingFactor), value -> config.verticalVelocitySmoothingFactor = clampSmoothness(value)));
