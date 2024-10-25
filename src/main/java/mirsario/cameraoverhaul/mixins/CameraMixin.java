@@ -1,5 +1,5 @@
-#if FABRIC_LOADER && !MC_BTA
-package mirsario.cameraoverhaul.fabric.mixins;
+//? if FABRIC_LOADER {
+package mirsario.cameraoverhaul.mixins;
 
 import mirsario.cameraoverhaul.*;
 import mirsario.cameraoverhaul.utilities.*;
@@ -12,11 +12,11 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.*;
 import net.minecraft.world.phys.*;
-#if MC_VERSION < "11500"
-import org.lwjgl.opengl.*;
-#endif
+//? if <1.15
+/*import org.lwjgl.opengl.*;*/
 
 @Mixin(Camera.class)
+@SuppressWarnings("UnusedMixin")
 public abstract class CameraMixin {
 	@Shadow public abstract float getXRot();
 	@Shadow public abstract float getYRot();
@@ -34,14 +34,14 @@ public abstract class CameraMixin {
 		);
 		if (entity instanceof LivingEntity) {
 			context.isFlying = ((LivingEntity)entity).isFallFlying();
-			context.isSwimming = ((LivingEntity)entity).isSwimming();
+			context.isSwimming = entity.isSwimming();
 		}
 
-#if MC_VERSION < "11500"
-		// Undo multiplications.
+//? if <1.15 {
+		/*// Undo multiplications.
 		GL11.glRotatef((float)context.transform.eulerRot.y + 180.0f, 0f, -1f, 0f);
 		GL11.glRotatef((float)context.transform.eulerRot.x, -1f, 0f, 0f);
-#endif
+*///?}
 
 		TimeSystem.update();
 		system.onCameraUpdate(context, TimeSystem.getDeltaTime());
@@ -49,12 +49,12 @@ public abstract class CameraMixin {
 
 		setRotation((float)context.transform.eulerRot.y, (float)context.transform.eulerRot.x);
 
-#if MC_VERSION < "11500"
-		// And now redo them.
+//? if <1.15 {
+		/*// And now redo them.
 		GL11.glRotatef((float)context.transform.eulerRot.z, 0f, 0f, 1f);
 		GL11.glRotatef((float)context.transform.eulerRot.x, 1f, 0f, 0f);
 		GL11.glRotatef((float)context.transform.eulerRot.y + 180f, 0f, 1f, 0f);
-#endif
+*///?}
 	}
 }
-#endif
+//?}

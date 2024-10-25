@@ -22,7 +22,13 @@ Negative numbers are also usually legal, allowing inverting effects, if that's y
 ## 📖 License
 All code of this repository is provided under [the MIT License](https://github.com/Mirsario/Minecraft-CameraOverhaul/blob/fabric-universal/LICENSE.md).
 
-## ❤️ Contributors
+## ❤️ Contributing
+This project uses the [Stonecutter](https://stonecutter.kikugie.dev) comment-macro preprocessor for multi-version support.
+- The IntelliJ [Stonecutter Dev](https://plugins.jetbrains.com/plugin/25044-stonecutter-dev) plugin is highly recommended. Manually install it in zip form if you see complaints about your IDE version not being supported.
+- After getting the repository's source code, use `gradlew tasks` to list available Gradle tasks.
+- Use the `buildAllVersions` Gradle task to properly build all targets of the mod.
+- Use tasks under the `Stonecutter` group to "checkout" specific versions, running the preprocessor on the source code and updating all comment blocks.
+
 Thank you to the following contributors for helping improve the mod for everyone!
 
 <a href="https://github.com/Mirsario/Minecraft-CameraOverhaul/graphs/contributors">

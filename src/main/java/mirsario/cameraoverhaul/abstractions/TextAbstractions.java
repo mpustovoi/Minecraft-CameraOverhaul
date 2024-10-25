@@ -1,17 +1,15 @@
 package mirsario.cameraoverhaul.abstractions;
 
-#if MC_RELEASE
+//? if MC_RELEASE
 import net.minecraft.network.chat.*;
-#endif
 
 public final class TextAbstractions {
-#if MC_RELEASE
+//? if MC_RELEASE {
 	public static Component createText(String key) {
-		#if MC_VERSION >= "11900"
+		//? if >=1.19 {
 			return Component.translatable(key);
-		#else
-			return new TranslatableComponent(key);
-		#endif
+		//?} else
+			/*return new TranslatableComponent(key);*/
 	}
-#endif
+//?}
 }

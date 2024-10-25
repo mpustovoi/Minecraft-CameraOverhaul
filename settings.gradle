@@ -3,7 +3,8 @@ pluginManagement {
 		// Shared
 		mavenCentral()
 		gradlePluginPortal()
-
+		// Stonecutter
+		maven { url = "https://maven.kikugie.dev/snapshots" }
 		// Fabric
 		maven {
 			name = 'Fabric'
@@ -12,8 +13,20 @@ pluginManagement {
 	}
 }
 
-include ":projects:fabric:[1.14.0-1.14.4]"
-include ":projects:fabric:[1.15.0-1.16.5]"
-include ":projects:fabric:[1.17.0-1.18.2]"
-include ":projects:fabric:[1.19.0-1.19.2]"
-include ":projects:fabric:[1.19.3-1.20.4]"
+plugins {
+	id "dev.kikugie.stonecutter" version "0.4.5" //"0.5-beta.2"
+}
+
+stonecutter {
+	shared {
+		vers("fabric-1.14.4", "1.14.4")
+		vers("fabric-1.15", "1.15")
+		vers("fabric-1.17", "1.17")
+		vers("fabric-1.19", "1.19")
+		vers("fabric-1.19.3", "1.19.3")
+		vers("fabric-1.20.6", "1.20.6")
+		vcsVersion = "fabric-1.20.6"
+	}
+
+	create rootProject
+}

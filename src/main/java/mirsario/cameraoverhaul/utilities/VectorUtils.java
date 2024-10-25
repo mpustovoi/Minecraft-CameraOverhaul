@@ -4,14 +4,12 @@ import org.joml.Vector2d;
 import org.joml.Vector3d;
 
 public final class VectorUtils {
-	#if MC_RELEASE
 	public static Vector2d toJoml(net.minecraft.world.phys.Vec2 vec) {
 		return new Vector2d(vec.x, vec.y);
 	}
 	public static Vector3d toJoml(net.minecraft.world.phys.Vec3 vec) {
 		return new Vector3d(vec.x, vec.y, vec.z);
 	}
-	#endif
 
 	public static double length(Vector2d vec) {
 		return length(vec.x, vec.y);

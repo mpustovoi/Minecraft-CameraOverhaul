@@ -1,5 +1,5 @@
-#if FABRIC_LOADER && MC_VERSION >= "11500"
-package mirsario.cameraoverhaul.fabric.mixins;
+//? if (FABRIC_LOADER && >=1.15) {
+package mirsario.cameraoverhaul.mixins;
 
 import mirsario.cameraoverhaul.*;
 import mirsario.cameraoverhaul.abstractions.*;
@@ -31,4 +31,4 @@ public abstract class GameRendererMixin {
 		MathAbstractions.rotateMatrixByAxis(matrices, 0f, 0f, 1f, cameraTransform.eulerRot.z);
 	}
 }
-#endif
+//?}

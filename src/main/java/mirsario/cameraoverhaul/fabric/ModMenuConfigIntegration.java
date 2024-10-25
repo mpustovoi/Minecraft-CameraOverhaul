@@ -1,4 +1,4 @@
-#if FABRIC_LOADER && MC_RELEASE
+//? if FABRIC_LOADER && MC_RELEASE
 package mirsario.cameraoverhaul.fabric;
 
 import java.util.function.*;
@@ -11,25 +11,26 @@ import mirsario.cameraoverhaul.utilities.*;
 import net.minecraft.client.*;
 
 // Beyond annoying.
-#if MC_VERSION <= "11700"
-import io.github.prospector.modmenu.api.*;
+//? if <=1.17 {
+/*import io.github.prospector.modmenu.api.*;
 import net.minecraft.client.gui.screens.*;
-#else
+*///?} else {
 import com.terraformersmc.modmenu.api.*;
-#endif
+//?}
 
+@SuppressWarnings({ "deprecation", "unused" })
 public class ModMenuConfigIntegration implements ModMenuApi {
 	private static final String CONFIG_ENTRIES_PREFIX = "cameraoverhaul.config";
 
-#if MC_VERSION <= "11700"
-	public String getModId() {
+//? if <=1.17 {
+	/*public String getModId() {
 		return CameraOverhaul.MOD_ID;
 	}
 
 	public Function<Screen, ? extends Screen> getConfigScreenFactory() {
 		return screen -> getConfigBuilder().build();
 	}
-#endif
+*///?}
 
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
@@ -40,8 +41,8 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 	public static ConfigBuilder getConfigBuilder() {
 		CameraOverhaul.LOGGER.info("Opening config screen.");
 		ConfigData config = CameraOverhaul.instance.config;
-		
 		ConfigBuilder builder = ConfigBuilder.create()
+
 			.setParentScreen(Minecraft.getInstance().screen)
 			.setTitle(getText("cameraoverhaul.config.title"))
 			.transparentBackground()
@@ -49,7 +50,7 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 		
 		ConfigCategory general = builder.getOrCreateCategory(getText("cameraoverhaul.config.category.general"));
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
-		
+
 		// Entries
 		general.addEntry(createBooleanEntry(entryBuilder, "enabled", true, config.enabled, value -> config.enabled = value));
 		// Roll factors
@@ -98,14 +99,14 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 			.build();
 	}
 
-#if MC_VERSION >= "11700"
+//? if >=1.17 {
 	private static net.minecraft.network.chat.Component getText(String key) {
 		return TextAbstractions.createText(key);
 	}
-#else
-	private static String getText(String key) {
+//?} else {
+	/*private static String getText(String key) {
 		return TextAbstractions.createText(key).getString();
 	}
-#endif
+*///?}
 }
-#endif
+//#endif

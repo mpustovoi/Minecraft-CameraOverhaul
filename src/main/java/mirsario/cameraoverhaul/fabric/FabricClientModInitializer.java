@@ -1,4 +1,4 @@
-#if FABRIC_LOADER
+//? if FABRIC_LOADER {
 package mirsario.cameraoverhaul.fabric;
 
 import mirsario.cameraoverhaul.*;
@@ -14,4 +14,4 @@ public class FabricClientModInitializer implements ClientModInitializer {
 		CameraOverhaul.instance.onInitializeClient();
 	}
 }
-#endif
+//?}

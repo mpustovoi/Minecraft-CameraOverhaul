@@ -1,7 +1,7 @@
 {
 	"required": false,
-	"package": "mirsario.cameraoverhaul.fabric.mixins",
-	"plugin": "mirsario.cameraoverhaul.fabric.MixinPlugin",
+	"package": "mirsario.cameraoverhaul.mixins",
+	"plugin": "mirsario.cameraoverhaul.mixins.MixinPlugin",
 	"compatibilityLevel": "JAVA_8",
 	"injectors": {
 		"defaultRequire": 1

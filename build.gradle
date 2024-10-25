@@ -1,57 +1,64 @@
-subprojects {
-	// Skip projects that don't declare a MC version.
-	if (project.properties.minecraft_version == null) {
-		return
+plugins {
+	id "fabric-loom" version "1.3-SNAPSHOT"
+}
+
+base {
+	archivesName = property "archives_base_name"
+	group = property "maven_group"
+	//version = property("mod.version")
+	version = "v${property "mod.version"}-${property "loader.id"}+mc${property "mc.displayed_range"}"
+}
+
+repositories {
+	maven { url "https://maven.shedaniel.me" }
+	maven { url "https://maven.terraformersmc.com/releases" }
+}
+
+def mcVersion = property("mc.version").toString()
+def clothConfigVersion = property("deps.cloth_config")
+def clothConfigMajor = clothConfigVersion != "[VERSIONED]" ? clothConfigVersion.split("\\.")[0].toInteger() : 0
+
+// To change any versions see the gradle.properties files under root and "/versions/*/"
+dependencies {
+	minecraft "com.mojang:minecraft:${mcVersion}"
+	mappings loom.officialMojangMappings()
+	modImplementation "net.fabricmc:fabric-loader:${property("deps.fabric_loader")}"
+
+	// Common libraries
+	include (implementation "io.hotmoka:toml4j:0.7.3")
+	if (stonecutter.eval(mcVersion, "<1.19.3")) {
+		include(implementation "org.joml:joml:1.10.5")
 	}
 
-	apply plugin: "java"
-
-	base {
-		archivesName = project.properties.archives_base_name
-		version = "${project.properties.mod_version}-${project.properties.loader_name}-${project.name}"
-		group = project.properties.maven_group
-
-		//layout.buildDirectory = new File(rootProject.projectDir, "build")
-		layout.buildDirectory = new File(rootProject.projectDir, "build/${project.properties.loader_name}-${project.name}")
+	// Cloth Config
+	modApi("me.shedaniel.cloth:${clothConfigMajor <= 2 ? "config-2" : "cloth-config-fabric"}:${clothConfigVersion}") {
+		// Prevent preparing two loader versions in cache. Not needed.
+		exclude(group: "net.fabricmc")
+		exclude(group: "net.fabricmc.fabric-api")
 	}
+	// ModMenu API, to add the Config Screen to it
+	modImplementation "com.terraformersmc:modmenu:${property("deps.modmenu")}"
+}
 
-	// Subprojects use the same codebase, but different properties & preprocessor defines.
-	sourceSets {
-		main.java.srcDirs = [ new File(rootProject.projectDir, "src/main/java").absolutePath ]
-		main.resources.srcDirs = [ new File(rootProject.projectDir, "src/main/resources").absolutePath ]
+def javaVersion = stonecutter.eval(mcVersion, ">=1.20.6") ? JavaVersion.VERSION_21 : JavaVersion.VERSION_17
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = javaVersion.ordinal() + 1
+}
+
+processResources {
+	filesMatching("fabric.mod.json") {
+		expand([
+			"mod_version": project.property("mod.version"),
+			"deps_minecraft": project.property("mc.version_range"),
+			"deps_cloth_config": project.property("deps.cloth_config"),
+			"deps_modmenu": project.property("deps.modmenu"),
+		])
 	}
+}
 
-	java {
-		// Language version.
-		sourceCompatibility = JavaVersion.VERSION_17
-		targetCompatibility = JavaVersion.VERSION_1_8
-		// Produce a sources jar.
-		withSourcesJar()
-	}
-	tasks.withType(JavaCompile) {
-		options.encoding = "UTF-8"
-		options.release = 17 // Also language version.
-	}
-
-	// Shared dependencies.
-	dependencies {
-		annotationProcessor 'systems.manifold:manifold-preprocessor:2024.1.1'
-	}
-
-	def mcVersionSplit = project.properties.minecraft_version.split("\\.")
-	def mcVersionMajor = mcVersionSplit[0]
-	def mcVersionMain = mcVersionSplit[1]
-	def mcVersionMinor = mcVersionSplit.size() >= 3 ? (mcVersionSplit[2] as String).padLeft(2, '0') : '00'
-	def merged_mc_version = "$mcVersionMajor$mcVersionMain$mcVersionMinor"
-
-	tasks.withType(JavaCompile).forEach {
-		// Enable & configure manifold
-		it.options.compilerArgs += [
-			'-Xplugin:Manifold',
-			"-AMC_VERSION=${merged_mc_version}",
-			"-AMC_${project.properties.minecraft_type.toUpperCase()}",
-			"-A${project.properties.loader_name.toUpperCase()}_LOADER",
-			"-A${project.properties.loader_type.toUpperCase()}_LOADER"
-		]
+loom {
+	runConfigs.all {
+		ideConfigGenerated true // Run configurations are not created for subprojects by default
+		runDir "../../run" // Use a shared run folder and create separate worlds
 	}
 }

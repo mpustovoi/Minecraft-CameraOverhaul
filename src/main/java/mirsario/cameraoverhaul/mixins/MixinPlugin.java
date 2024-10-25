@@ -1,5 +1,5 @@
-#if FABRIC_LOADER
-package mirsario.cameraoverhaul.fabric;
+//? if FABRIC_LOADER {
+package mirsario.cameraoverhaul.mixins;
 
 import org.objectweb.asm.tree.*;
 import org.spongepowered.asm.mixin.extensibility.*;
@@ -7,7 +7,7 @@ import mirsario.cameraoverhaul.*;
 import java.util.*;
 
 public class MixinPlugin implements IMixinConfigPlugin {
-    private static final String MIXINS_PACKAGE = "mirsario.cameraoverhaul.fabric.mixins";
+    private static final String MIXINS_PACKAGE = "mirsario.cameraoverhaul.mixins";
     private static final String[] MIXINS = new String[] {
         "CameraMixin",
         "CameraMixinBta",
@@ -44,14 +44,14 @@ public class MixinPlugin implements IMixinConfigPlugin {
             String mixinClassName = MIXINS_PACKAGE + "." + mixin;
             try {
                 Class.forName(mixinClassName, false, getClass().getClassLoader());
-                CameraOverhaul.LOGGER.info("Applying present mixin: '" + mixinClassName + "'.");
+                CameraOverhaul.LOGGER.info("Applying present mixin: '{}'.", mixinClassName);
                 list.add(mixin);
             } catch (ClassNotFoundException ignored) {
-                CameraOverhaul.LOGGER.info("Skipping missing mixin: '" + mixinClassName + "'.");
+                CameraOverhaul.LOGGER.info("Skipping missing mixin: '{}'.", mixinClassName);
             }
         }
 
 		return list;
 	}
 }
-#endif
+//?}
