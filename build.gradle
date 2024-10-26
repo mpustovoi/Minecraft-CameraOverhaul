@@ -62,3 +62,9 @@ loom {
 		runDir "../../run" // Use a shared run folder and create separate worlds
 	}
 }
+
+// Copy produced jars into /out/
+task copyJar(type: Copy) {
+	from remapJar into "../../out/"
+}
+build.finalizedBy copyJar
