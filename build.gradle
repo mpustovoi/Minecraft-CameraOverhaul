@@ -1,5 +1,5 @@
 plugins {
-	id "fabric-loom" version "1.3-SNAPSHOT"
+	id "fabric-loom" version "1.8-SNAPSHOT"
 }
 
 base {
@@ -15,7 +15,7 @@ repositories {
 }
 
 def mcVersion = property("mc.version").toString()
-def clothConfigVersion = property("deps.cloth_config")
+def clothConfigVersion = property("mods.clothconfig.ref")
 def clothConfigMajor = clothConfigVersion != "[VERSIONED]" ? clothConfigVersion.split("\\.")[0].toInteger() : 0
 
 // To change any versions see the gradle.properties files under root and "/versions/*/"
@@ -37,7 +37,7 @@ dependencies {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
 	// ModMenu API, to add the Config Screen to it
-	modImplementation "com.terraformersmc:modmenu:${property("deps.modmenu")}"
+	modImplementation "com.terraformersmc:modmenu:${property("mods.modmenu.ref")}"
 }
 
 def javaVersion = stonecutter.eval(mcVersion, ">=1.20.6") ? JavaVersion.VERSION_21 : JavaVersion.VERSION_17
@@ -49,9 +49,9 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand([
 			"mod_version": project.property("mod.version"),
-			"deps_minecraft": project.property("mc.version_range"),
-			"deps_cloth_config": project.property("deps.cloth_config"),
-			"deps_modmenu": project.property("deps.modmenu"),
+			"mc_version_range": project.property("mc.version_range"),
+			"mods_clothconfig_range": project.property("mods.clothconfig.range"),
+			"mods_modmenu_range": project.property("mods.modmenu.range"),
 		])
 	}
 }

@@ -1,9 +1,6 @@
 {
-	"required": false,
+	"required": true,
 	"package": "mirsario.cameraoverhaul.mixins",
 	"plugin": "mirsario.cameraoverhaul.mixins.MixinPlugin",
-	"compatibilityLevel": "JAVA_8",
-	"injectors": {
-		"defaultRequire": 1
-	}
+	"compatibilityLevel": "JAVA_8"
 }
