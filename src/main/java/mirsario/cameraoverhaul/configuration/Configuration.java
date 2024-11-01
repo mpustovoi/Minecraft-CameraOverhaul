@@ -10,11 +10,11 @@ public final class Configuration {
 	private static final Path CONFIG_DIR = FabricLoader.getInstance().getConfigDir();
 	private static final Path CONFIG_PATH = CONFIG_DIR.resolve(CameraOverhaul.MOD_ID + ".toml");
 	private static final Toml TOML = new Toml();
-	private static ConfigData configData;
+	private static final ConfigData configDefault = new ConfigData();
+	private static ConfigData configCurrent;
 
-	public static ConfigData get() {
-		return configData;
-	}
+	public static ConfigData get() { return configCurrent; }
+	public static ConfigData getDefault() { return configDefault; }
 
 	public static void loadConfig() {
 		var file = CONFIG_PATH.toFile();
@@ -23,12 +23,12 @@ public final class Configuration {
 			Files.createDirectories(CONFIG_DIR);
 
 			if (file.exists()) {
-				configData = TOML.read(file).to(ConfigData.class);
+				configCurrent = TOML.read(file).to(ConfigData.class);
 			} else {
-				configData = new ConfigData();
+				configCurrent = new ConfigData();
 			}
 		} catch (Exception e) {
-			configData = new ConfigData();
+			configCurrent = new ConfigData();
 			CameraOverhaul.LOGGER.error("Failed to load config file", e);
 		}
 
@@ -36,10 +36,10 @@ public final class Configuration {
 	}
 	
 	public static void saveConfig() {
-		configData.configVersion = ConfigData.CONFIG_VERSION;
+		configCurrent.configVersion = ConfigData.CONFIG_VERSION;
 
 		try (BufferedWriter writer = Files.newBufferedWriter(CONFIG_PATH)) {
-			new TomlWriter().write(configData, writer);
+			new TomlWriter().write(configCurrent, writer);
 		} catch (IOException e) {
 			CameraOverhaul.LOGGER.error("Failed to save config file", e);
 		}

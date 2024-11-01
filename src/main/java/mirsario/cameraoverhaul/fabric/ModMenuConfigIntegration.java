@@ -1,6 +1,7 @@
 //? if FABRIC_LOADER && MC_RELEASE
 package mirsario.cameraoverhaul.fabric;
 
+import java.lang.reflect.Field;
 import java.util.function.*;
 import me.shedaniel.clothconfig2.api.*;
 import me.shedaniel.clothconfig2.gui.entries.*;
@@ -39,35 +40,47 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 
 	public static ConfigBuilder getConfigBuilder() {
 		CameraOverhaul.LOGGER.info("Opening config screen.");
-		ConfigData config = Configuration.get();
+		var config = Configuration.get();
+		var configDefault = Configuration.getDefault();
 
-		ConfigBuilder builder = (ConfigBuilder.create()
+		var builder = (ConfigBuilder.create()
 			.setParentScreen(Minecraft.getInstance().screen)
 			.setTitle(getText("cameraoverhaul.config.title"))
 			.transparentBackground()
 			.setSavingRunnable(Configuration::saveConfig)
 		);
 
-		ConfigCategory general = builder.getOrCreateCategory(getText("cameraoverhaul.config.category.general"));
-		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
+		var general = builder.getOrCreateCategory(getText("cameraoverhaul.config.category.general"));
+		var entryBuilder = builder.entryBuilder();
+		var configClass = ConfigData.class;
 
-		// Entries
-		general.addEntry(createBooleanEntry(entryBuilder, "enabled", true, config.enabled, value -> config.enabled = value));
-		// Roll factors
-		general.addEntry(createFloatFactorEntry(entryBuilder, "strafingRollFactor", 1.0f, config.strafingRollFactor, value -> config.strafingRollFactor = value));
-		general.addEntry(createFloatFactorEntry(entryBuilder, "strafingRollFactorWhenFlying", -1.0f, config.strafingRollFactorWhenFlying, value -> config.strafingRollFactorWhenFlying = value));
-		general.addEntry(createFloatFactorEntry(entryBuilder, "strafingRollFactorWhenSwimming", -1.0f, config.strafingRollFactorWhenSwimming, value -> config.strafingRollFactorWhenSwimming = value));
-		general.addEntry(createFloatFactorEntry(entryBuilder, "yawDeltaRollFactor", 1.0f, config.yawDeltaRollFactor, value -> config.yawDeltaRollFactor = value));
-		// Pitch factors
-		general.addEntry(createFloatFactorEntry(entryBuilder, "verticalVelocityPitchFactor", 1.0f, config.verticalVelocityPitchFactor, value -> config.verticalVelocityPitchFactor = value));
-		general.addEntry(createFloatFactorEntry(entryBuilder, "forwardVelocityPitchFactor", 1.0f, config.forwardVelocityPitchFactor, value -> config.forwardVelocityPitchFactor = value));
+		for (var field : configClass.getFields()) {
+			var baseTranslationPath = CONFIG_ENTRIES_PREFIX + "." + field.getName().toLowerCase();
+			AbstractConfigListEntry<?> entry = null;
 
-		// Smoothing factors
-		general.addEntry(createFloatFactorEntry(entryBuilder, "horizontalVelocitySmoothingFactor", 0.8f, clampSmoothness(config.horizontalVelocitySmoothingFactor), value -> config.horizontalVelocitySmoothingFactor = clampSmoothness(value)));
-		general.addEntry(createFloatFactorEntry(entryBuilder, "verticalVelocitySmoothingFactor", 0.8f, clampSmoothness(config.verticalVelocitySmoothingFactor), value -> config.verticalVelocitySmoothingFactor = clampSmoothness(value)));
-		general.addEntry(createFloatFactorEntry(entryBuilder, "yawDeltaSmoothingFactor", 0.8f, clampSmoothness(config.yawDeltaSmoothingFactor), value -> config.yawDeltaSmoothingFactor = clampSmoothness(value)));
-		general.addEntry(createFloatFactorEntry(entryBuilder, "yawDeltaDecayFactor", 0.5f, clampSmoothness(config.yawDeltaDecayFactor), value -> config.yawDeltaDecayFactor = clampSmoothness(value)));
-		
+			try {
+				if (field.getType() == float.class) {
+					entry = (entryBuilder.startFloatField(getText(baseTranslationPath + ".name"), (float)field.get(config))
+						.setDefaultValue((float)field.get(configDefault))
+						.setTooltip(getText(baseTranslationPath + ".tooltip"))
+						.setSaveConsumer(newValue -> trySetConfigFieldValue(field, newValue))
+						.build()
+					);
+				} else if (field.getType() == boolean.class) {
+					entry = (entryBuilder.startBooleanToggle(getText(baseTranslationPath + ".name"), (boolean)field.get(config))
+						.setDefaultValue((boolean)field.get(configDefault))
+						.setTooltip(getText(baseTranslationPath + ".tooltip"))
+						.setSaveConsumer(newValue -> trySetConfigFieldValue(field, newValue))
+						.build()
+					);
+				}
+			}
+			catch (Exception e) { CameraOverhaul.LOGGER.trace(e); }
+
+			if (entry != null)
+				general.addEntry(entry);
+		}
+
 		return builder;
 	}
 
@@ -78,8 +91,7 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 	// Entry Helpers
 
 	public static BooleanListEntry createBooleanEntry(ConfigEntryBuilder entryBuilder, String entryName, Boolean defaultValue, Boolean value, Function<Boolean, Boolean> setter) {
-		String lowerCaseName = entryName.toLowerCase();
-		String baseTranslationPath = CONFIG_ENTRIES_PREFIX + "." + lowerCaseName;
+		var baseTranslationPath = CONFIG_ENTRIES_PREFIX + "." + entryName.toLowerCase();
 
 		return entryBuilder.startBooleanToggle(getText(baseTranslationPath + ".name"), value)
 			.setDefaultValue(defaultValue)
@@ -89,8 +101,7 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 	}
 
 	public static FloatListEntry createFloatFactorEntry(ConfigEntryBuilder entryBuilder, String entryName, float defaultValue, float value, Function<Float, Float> setter) {
-		String lowerCaseName = entryName.toLowerCase();
-		String baseTranslationPath = CONFIG_ENTRIES_PREFIX + "." + lowerCaseName;
+		var baseTranslationPath = CONFIG_ENTRIES_PREFIX + "." + entryName.toLowerCase();
 
 		return entryBuilder.startFloatField(getText(baseTranslationPath + ".name"), value)
 			.setDefaultValue(defaultValue)
@@ -108,5 +119,10 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 		return TextAbstractions.createText(key).getString();
 	}
 *///?}
+
+	private static void trySetConfigFieldValue(Field field, Object value) {
+		try { field.set(Configuration.get(), value); }
+		catch (Exception e) { CameraOverhaul.LOGGER.trace(e); }
+	}
 }
 //#endif
