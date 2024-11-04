@@ -5,25 +5,12 @@ import mirsario.cameraoverhaul.utilities.*;
 import org.joml.*;
 import java.lang.Math;
 
+@SuppressWarnings("unused")
 public final class CameraSystem {
 	private static final double BASE_HORIZONTAL_VELOCITY_SMOOTHING = 0.008d;
 
-	private static final double BASE_VERTICAL_PITCH_MULTIPLIER = 2.50d;
-	private static final double BASE_VERTICAL_PITCH_SMOOTHING = 0.00004d;
-	private static final double BASE_FORWARD_PITCH_MULTIPLIER = 7.00d;
-	private static final double BASE_FORWARD_PITCH_SMOOTHING = BASE_HORIZONTAL_VELOCITY_SMOOTHING;
-	private static final double BASE_TURNING_ROLL_ACCUMULATION = 0.0048d;
-	private static final double BASE_TURNING_ROLL_INTENSITY = 1.25d;
-	private static final double BASE_TURNING_ROLL_SMOOTHING = 0.0825d;
-	private static final double BASE_STRAFING_ROLL_MULTIPLIER = 14.00d;
-	private static final double BASE_STRAFING_ROLL_SMOOTHING = BASE_HORIZONTAL_VELOCITY_SMOOTHING;
-
 	private ConfigData config;
-	private double prevForwardVelocityPitchOffset;
-	private double prevVerticalVelocityPitchOffset;
-	private double prevStrafingRollOffset;
-	private double prevCameraYaw;
-	private double turningRollTargetOffset;
+	private Vector3d prevCameraEulerRot = new Vector3d();
 	private CameraContext.Perspective prevCameraPerspective;
 	private final Transform offsetTransform = new Transform();
 
@@ -45,7 +32,7 @@ public final class CameraSystem {
 		turningRollOffset(context, offsetTransform, deltaTime);
 		strafingRollOffset(context, offsetTransform, deltaTime);
 
-		prevCameraYaw = context.transform.eulerRot.y;
+		prevCameraEulerRot.set(context.transform.eulerRot);
 		prevCameraPerspective = context.perspective;
 	}
 	public void modifyCameraTransform(Transform transform) {
@@ -53,6 +40,9 @@ public final class CameraSystem {
 		transform.eulerRot.add(offsetTransform.eulerRot);
 	}
 
+	private static final double BASE_VERTICAL_PITCH_MULTIPLIER = 2.50d;
+	private static final double BASE_VERTICAL_PITCH_SMOOTHING = 0.00004d;
+	private double prevVerticalVelocityPitchOffset;
 	private void verticalVelocityPitchOffset(CameraContext context, Transform outputTransform, double deltaTime) {
 		double multiplier = BASE_VERTICAL_PITCH_MULTIPLIER * config.verticalVelocityPitchFactor;
 		double smoothing = BASE_VERTICAL_PITCH_SMOOTHING * config.verticalVelocitySmoothingFactor;
@@ -64,6 +54,9 @@ public final class CameraSystem {
 		prevVerticalVelocityPitchOffset = currentOffset;
 	}
 
+	private static final double BASE_FORWARD_PITCH_MULTIPLIER = 7.00d;
+	private static final double BASE_FORWARD_PITCH_SMOOTHING = BASE_HORIZONTAL_VELOCITY_SMOOTHING;
+	private double prevForwardVelocityPitchOffset;
 	private void forwardVelocityPitchOffset(CameraContext context, Transform outputTransform, double deltaTime) {
 		double multiplier = BASE_FORWARD_PITCH_MULTIPLIER * config.forwardVelocityPitchFactor;
 		double smoothing = BASE_FORWARD_PITCH_SMOOTHING * config.horizontalVelocitySmoothingFactor;
@@ -75,11 +68,15 @@ public final class CameraSystem {
 		prevForwardVelocityPitchOffset = currentOffset;
 	}
 
+	private static final double BASE_TURNING_ROLL_ACCUMULATION = 0.0048d;
+	private static final double BASE_TURNING_ROLL_INTENSITY = 1.25d;
+	private static final double BASE_TURNING_ROLL_SMOOTHING = 0.0825d;
+	private double turningRollTargetOffset;
 	private void turningRollOffset(CameraContext context, Transform outputTransform, double deltaTime) {
 		double decaySmoothing = BASE_TURNING_ROLL_SMOOTHING * config.turningRollSmoothing;
 		double intensity = BASE_TURNING_ROLL_INTENSITY * config.turningRollIntensity;
 		double accumulation = BASE_TURNING_ROLL_ACCUMULATION * config.turningRollAccumulation;
-		double yawDelta = prevCameraYaw - context.transform.eulerRot.y;
+		double yawDelta = prevCameraEulerRot.y - context.transform.eulerRot.y;
 
 		// Don't spazz out when switching perspectives.
 		if (context.perspective != prevCameraPerspective) yawDelta = 0.0;
@@ -97,6 +94,9 @@ public final class CameraSystem {
 		return x < 0.5 ? (4 * x * x * x) : (1 - Math.pow(-2 * x + 2, 3) / 2);
 	}
 
+	private static final double BASE_STRAFING_ROLL_MULTIPLIER = 14.00d;
+	private static final double BASE_STRAFING_ROLL_SMOOTHING = BASE_HORIZONTAL_VELOCITY_SMOOTHING;
+	private double prevStrafingRollOffset;
 	private void strafingRollOffset(CameraContext context, Transform outputTransform, double deltaTime) {
 		double multiplier = BASE_STRAFING_ROLL_MULTIPLIER;
 		double smoothing = BASE_STRAFING_ROLL_SMOOTHING * config.horizontalVelocitySmoothingFactor;
