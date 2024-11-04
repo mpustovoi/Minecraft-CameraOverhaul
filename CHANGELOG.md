@@ -16,15 +16,14 @@
 | [1.0.0](#100)								| `2020.11.30` |
 
 # WIP
-
 - The mod has been rewritten for easier maintenance & scaling. Single-JAR version agnosticism based on 'reflection spam' has been sacrificed in favor of classic separate JARs tied to specific MC version ranges, but still produced out of a single codebase using preprocessors. An effort will still be made to support as many versions of Minecraft as possible, out of one codebase.
-- Fixed the mod using incorrect values for time deltas. Oopsie doopsie.
 - Completely reworked the `Yaw Delta Roll` feature, now known as `Mouselook Roll`. Configurable in 3 components - `Intensity`, `Accumulation`, and `Decay Smoothness`.
 - Base intensity values modified once again. Default values now all equal to 1.0 or -1.0.
 - Russian config localization, courtesy of `@mpustovoi`.
 
-# Work In Progress
-Nothing so far?
+**Fixes:**
+- Fixed the mod using incorrect values for time deltas. Oopsie doopsie.
+- Fixed issue [#43](https://github.com/Mirsario/Minecraft-CameraOverhaul/issues/43) (Toggling perspective (F5) causes camera to shake).
 
 # 1.4.1
 - Added compatibility with Minecraft `1.20.6`+ and `1.21`+ (Thanks, **@sam-mccarthy**!)

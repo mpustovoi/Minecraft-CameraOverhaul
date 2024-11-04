@@ -24,6 +24,7 @@ public final class CameraSystem {
 	private double prevStrafingRollOffset;
 	private double prevCameraYaw;
 	private double turningRollTargetOffset;
+	private CameraContext.Perspective prevCameraPerspective;
 	private final Transform offsetTransform = new Transform();
 
 	public void onCameraUpdate(CameraContext context, double deltaTime) {
@@ -45,6 +46,7 @@ public final class CameraSystem {
 		strafingRollOffset(context, offsetTransform, deltaTime);
 
 		prevCameraYaw = context.transform.eulerRot.y;
+		prevCameraPerspective = context.perspective;
 	}
 	public void modifyCameraTransform(Transform transform) {
 		transform.position.add(offsetTransform.position);
@@ -79,6 +81,8 @@ public final class CameraSystem {
 		double accumulation = BASE_TURNING_ROLL_ACCUMULATION * config.turningRollAccumulation;
 		double yawDelta = prevCameraYaw - context.transform.eulerRot.y;
 
+		// Don't spazz out when switching perspectives.
+		if (context.perspective != prevCameraPerspective) yawDelta = 0.0;
 
 		// Decay
 		turningRollTargetOffset = MathUtils.damp(turningRollTargetOffset, 0d, decaySmoothing, deltaTime);

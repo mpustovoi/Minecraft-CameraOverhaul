@@ -4,9 +4,16 @@ import mirsario.cameraoverhaul.utilities.*;
 import org.joml.*;
 
 public class CameraContext {
+	public enum Perspective {
+		FIRST_PERSON,
+		THIRD_PERSON,
+		THIRD_PERSON_REVERSE,
+	}
+
 	public boolean isSwimming;
 	public boolean isFlying;
 	public Vector3d velocity;
+	public Perspective perspective;
 	public Transform transform = new Transform();
 
 	public Vector3d getForwardRelativeVelocity() {

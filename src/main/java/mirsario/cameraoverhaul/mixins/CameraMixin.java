@@ -8,7 +8,6 @@ import org.joml.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
-import net.minecraft.world.*;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.*;
 import net.minecraft.world.phys.*;
@@ -32,6 +31,11 @@ public abstract class CameraMixin {
 			VectorUtils.toJoml(getPosition()),
 			new Vector3d(getXRot(), getYRot(), 0)
 		);
+		context.perspective = (thirdPerson
+			? (inverseView ? CameraContext.Perspective.THIRD_PERSON_REVERSE : CameraContext.Perspective.THIRD_PERSON)
+			: CameraContext.Perspective.FIRST_PERSON
+		);
+
 		if (entity instanceof LivingEntity) {
 			context.isFlying = ((LivingEntity)entity).isFallFlying();
 			context.isSwimming = entity.isSwimming();
