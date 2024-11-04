@@ -10,8 +10,13 @@
 	"cameraoverhaul.config.strafingrollfactorwhenflying.tooltip": "Controls the strength of the camera roll rotation when flying with an elytra",
 	"cameraoverhaul.config.strafingrollfactorwhenswimming.name": "Strafing Roll Factor When Swimming",
 	"cameraoverhaul.config.strafingrollfactorwhenswimming.tooltip": "Controls the strength of the camera roll rotation when swimming",
-	"cameraoverhaul.config.yawdeltarollfactor.name": "Mouselook Roll Factor",
-	"cameraoverhaul.config.yawdeltarollfactor.tooltip": "Controls the strength of the camera roll rotation caused by turning around horizontally.",
+
+	"cameraoverhaul.config.turningrollaccumulation.name": "Mouselook Roll Accumulation",
+	"cameraoverhaul.config.turningrollaccumulation.tooltip": "Controls the sensitivity of the camera roll rotation caused by turning around horizontally.",
+	"cameraoverhaul.config.turningrollintensity.name": "Mouselook Roll Intensity",
+	"cameraoverhaul.config.turningrollintensity.tooltip": "Controls the maximum strength of the camera roll rotation caused by turning around horizontally.",
+	"cameraoverhaul.config.turningrollsmoothing.name": "Mouselook Roll Smoothing",
+	"cameraoverhaul.config.turningrollsmoothing.tooltip": "Controls the decay smoothness of the camera roll rotation caused by turning around horizontally.",
 
 	"cameraoverhaul.config.verticalvelocitypitchfactor.name": "Vertical Velocity Pitch Factor",
 	"cameraoverhaul.config.verticalvelocitypitchfactor.tooltip": "Controls the strength of the camera pitch rotation offset caused by vertical velocity.",
@@ -21,9 +26,5 @@
 	"cameraoverhaul.config.horizontalvelocitysmoothingfactor.name": "Horizontal Velocity Smoothing Factor",
 	"cameraoverhaul.config.horizontalvelocitysmoothingfactor.tooltip": "Controls the smoothness of camera pitch & roll rotations caused by moving horizontally.",
 	"cameraoverhaul.config.verticalvelocitysmoothingfactor.name": "Vertical Velocity Smoothing Factor",
-	"cameraoverhaul.config.verticalvelocitysmoothingfactor.tooltip": "Controls the smoothness of camera pitch rotations caused by moving vertically.",
-	"cameraoverhaul.config.yawdeltasmoothingfactor.name": "Mouselook Roll Smoothing Factor",
-	"cameraoverhaul.config.yawdeltasmoothingfactor.tooltip": "Controls the smoothness of camera roll rotations caused by turning around horizontally.",
-	"cameraoverhaul.config.yawdeltadecayfactor.name": "Mouselook Roll Decay Factor",
-	"cameraoverhaul.config.yawdeltadecayfactor.tooltip": "Controls the smoothness of the decay of camera roll rotations caused by turning around horizontally."
+	"cameraoverhaul.config.verticalvelocitysmoothingfactor.tooltip": "Controls the smoothness of camera pitch rotations caused by moving vertically."
 }

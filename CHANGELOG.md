@@ -17,9 +17,10 @@
 
 # WIP
 
-- The mod has been semi-rewritten with easier maintenance & scaling as a goal. Single-JAR version agnosticism based on 'reflection spam' has been sacrificed in favor of separate JARs tied to specific MC version ranges produced out of a single codebase using preprocessors. An effort will still be made to support as many versions of Minecraft as possible, out of one codebase.
+- The mod has been rewritten for easier maintenance & scaling. Single-JAR version agnosticism based on 'reflection spam' has been sacrificed in favor of classic separate JARs tied to specific MC version ranges, but still produced out of a single codebase using preprocessors. An effort will still be made to support as many versions of Minecraft as possible, out of one codebase.
 - Fixed the mod using incorrect values for time deltas. Oopsie doopsie.
-- Base intensity values modified once again. Default values are now all set to 1.0.
+- Completely reworked the `Yaw Delta Roll` feature, now known as `Mouselook Roll`. Configurable in 3 components - `Intensity`, `Accumulation`, and `Decay Smoothness`.
+- Base intensity values modified once again. Default values now all equal to 1.0 or -1.0.
 - Russian config localization, courtesy of `@mpustovoi`.
 
 # Work In Progress

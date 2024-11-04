@@ -5,17 +5,18 @@ public class ConfigData {
 
 	public boolean enabled = true;
 	public int configVersion;
-	// Roll
+	// Strafing Roll
 	public float strafingRollFactor = 1.0f;
 	public float strafingRollFactorWhenFlying = -1.0f;
 	public float strafingRollFactorWhenSwimming = -1.0f;
-	public float yawDeltaRollFactor = 1.0f;
+	// Turning Roll
+	public float turningRollAccumulation = 1.0f;
+	public float turningRollIntensity = 1.0f;
+	public float turningRollSmoothing = 1.0f;
 	// Pitch factors
 	public float verticalVelocityPitchFactor = 1.0f;
 	public float forwardVelocityPitchFactor = 1.0f;
 	// Smoothing factors
 	public float horizontalVelocitySmoothingFactor = 1.0f;
 	public float verticalVelocitySmoothingFactor = 1.0f;
-	public float yawDeltaSmoothingFactor = 1.0f;
-	public float yawDeltaDecayFactor = 1.0f;
 }

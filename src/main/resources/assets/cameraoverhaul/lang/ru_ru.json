@@ -10,8 +10,13 @@
 	"cameraoverhaul.config.strafingrollfactorwhenflying.tooltip": "Управляет силой крена камеры при полёте на элитрах",
 	"cameraoverhaul.config.strafingrollfactorwhenswimming.name": "Коэффициент крена при боковом движении во время плавания",
 	"cameraoverhaul.config.strafingrollfactorwhenswimming.tooltip": "Управляет силой крена камеры при плавании",
-	"cameraoverhaul.config.yawdeltarollfactor.name": "Коэффициент крена при повороте камерой",
-	"cameraoverhaul.config.yawdeltarollfactor.tooltip": "Управляет силой крена камеры при её горизонтальном повороте.",
+
+	"cameraoverhaul.config.turningrollaccumulation.name": "Mouselook Roll Accumulation",
+	"cameraoverhaul.config.turningrollaccumulation.tooltip": "Controls the sensitivity of the camera roll rotation caused by turning around horizontally.",
+	"cameraoverhaul.config.turningrollintensity.name": "Mouselook Roll Intensity",
+	"cameraoverhaul.config.turningrollintensity.tooltip": "Controls the maximum strength of the camera roll rotation caused by turning around horizontally.",
+	"cameraoverhaul.config.turningrollsmoothing.name": "Mouselook Roll Smoothing",
+	"cameraoverhaul.config.turningrollsmoothing.tooltip": "Controls the decay smoothness of the camera roll rotation caused by turning around horizontally.",
 
 	"cameraoverhaul.config.verticalvelocitypitchfactor.name": "Коэффициент тангажа вертикальной скорости",
 	"cameraoverhaul.config.verticalvelocitypitchfactor.tooltip": "Управляет силой смещения угла поворота камеры, вызванного вертикальной скоростью.",
@@ -21,9 +26,5 @@
 	"cameraoverhaul.config.horizontalvelocitysmoothingfactor.name": "Коэффициент сглаживания горизонтальной скорости",
 	"cameraoverhaul.config.horizontalvelocitysmoothingfactor.tooltip": "Управляет плавностью поворота камеры по тангажу и крену от горизонтального перемещения.",
 	"cameraoverhaul.config.verticalvelocitysmoothingfactor.name": "Коэффициент сглаживания вертикальной скорости",
-	"cameraoverhaul.config.verticalvelocitysmoothingfactor.tooltip": "Управляет плавностью изменения угла наклона камеры, вызванного перемещением по вертикали.",
-	"cameraoverhaul.config.yawdeltasmoothingfactor.name": "Коэффициент сглаживания крена при повороте камерой",
-	"cameraoverhaul.config.yawdeltasmoothingfactor.tooltip": "Управляет плавностью вращения камеры, при повороте по горизонтали.",
-	"cameraoverhaul.config.yawdeltadecayfactor.name": "Коэффициент затухания крена при повороте камерой",
-	"cameraoverhaul.config.yawdeltadecayfactor.tooltip": "Управляет плавностью затухания вращения камеры, при повороте по горизонтали."
+	"cameraoverhaul.config.verticalvelocitysmoothingfactor.tooltip": "Управляет плавностью изменения угла наклона камеры, вызванного перемещением по вертикали."
 }

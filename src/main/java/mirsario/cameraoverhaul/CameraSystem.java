@@ -3,17 +3,18 @@ package mirsario.cameraoverhaul;
 import mirsario.cameraoverhaul.configuration.*;
 import mirsario.cameraoverhaul.utilities.*;
 import org.joml.*;
+import java.lang.Math;
 
 public final class CameraSystem {
-	private static final double BASE_HORIZONTAL_VELOCITY_SMOOTHING = 0.00007d;
+	private static final double BASE_HORIZONTAL_VELOCITY_SMOOTHING = 0.008d;
 
 	private static final double BASE_VERTICAL_PITCH_MULTIPLIER = 2.50d;
-	private static final double BASE_VERTICAL_PITCH_SMOOTHING = 0.0000001d;
+	private static final double BASE_VERTICAL_PITCH_SMOOTHING = 0.00004d;
 	private static final double BASE_FORWARD_PITCH_MULTIPLIER = 7.00d;
 	private static final double BASE_FORWARD_PITCH_SMOOTHING = BASE_HORIZONTAL_VELOCITY_SMOOTHING;
-	private static final double BASE_TURNING_ROLL_MULTIPLIER = 0.05d;
-	private static final double BASE_TURNING_ROLL_SMOOTHING = 0.000006d;
-	private static final double BASE_TURNING_ROLL_DECAY = 0.00006d;
+	private static final double BASE_TURNING_ROLL_ACCUMULATION = 0.0048d;
+	private static final double BASE_TURNING_ROLL_INTENSITY = 1.25d;
+	private static final double BASE_TURNING_ROLL_SMOOTHING = 0.0825d;
 	private static final double BASE_STRAFING_ROLL_MULTIPLIER = 14.00d;
 	private static final double BASE_STRAFING_ROLL_SMOOTHING = BASE_HORIZONTAL_VELOCITY_SMOOTHING;
 
@@ -22,8 +23,6 @@ public final class CameraSystem {
 	private double prevVerticalVelocityPitchOffset;
 	private double prevStrafingRollOffset;
 	private double prevCameraYaw;
-	//private double prevTurningRollOffset;
-	private double turningRollOffset;
 	private double turningRollTargetOffset;
 	private final Transform offsetTransform = new Transform();
 
@@ -47,7 +46,6 @@ public final class CameraSystem {
 
 		prevCameraYaw = context.transform.eulerRot.y;
 	}
-
 	public void modifyCameraTransform(Transform transform) {
 		transform.position.add(offsetTransform.position);
 		transform.eulerRot.add(offsetTransform.eulerRot);
@@ -76,24 +74,23 @@ public final class CameraSystem {
 	}
 
 	private void turningRollOffset(CameraContext context, Transform outputTransform, double deltaTime) {
-		double multiplier = BASE_TURNING_ROLL_MULTIPLIER * config.yawDeltaRollFactor;
-		double offsetSmoothing = BASE_TURNING_ROLL_SMOOTHING * config.yawDeltaSmoothingFactor;
-		double decaySmoothing = BASE_TURNING_ROLL_DECAY * config.yawDeltaDecayFactor;
-
+		double decaySmoothing = BASE_TURNING_ROLL_SMOOTHING * config.turningRollSmoothing;
+		double intensity = BASE_TURNING_ROLL_INTENSITY * config.turningRollIntensity;
+		double accumulation = BASE_TURNING_ROLL_ACCUMULATION * config.turningRollAccumulation;
 		double yawDelta = prevCameraYaw - context.transform.eulerRot.y;
 
-		if (yawDelta > 180) {
-			yawDelta = 360 - yawDelta;
-		} else if (yawDelta < -180) {
-			yawDelta = -360 - yawDelta;
-		}
 
-		turningRollTargetOffset += yawDelta * multiplier;
-		turningRollOffset = MathUtils.damp(turningRollOffset, turningRollTargetOffset, offsetSmoothing, deltaTime);
-
-		outputTransform.eulerRot.z += turningRollOffset;
-		
+		// Decay
 		turningRollTargetOffset = MathUtils.damp(turningRollTargetOffset, 0d, decaySmoothing, deltaTime);
+		// Accumulation
+		turningRollTargetOffset = MathUtils.clamp(turningRollTargetOffset + (yawDelta * accumulation), -1.0, 1.0);
+		// Apply
+		var turningRollOffset = MathUtils.clamp01(turningEasing(Math.abs(turningRollTargetOffset))) * intensity * Math.signum(turningRollTargetOffset);
+		outputTransform.eulerRot.z += turningRollOffset;
+	}
+	private static double turningEasing(double x) {
+		// https://easings.net/#easeInOutCubic
+		return x < 0.5 ? (4 * x * x * x) : (1 - Math.pow(-2 * x + 2, 3) / 2);
 	}
 
 	private void strafingRollOffset(CameraContext context, Transform outputTransform, double deltaTime) {
