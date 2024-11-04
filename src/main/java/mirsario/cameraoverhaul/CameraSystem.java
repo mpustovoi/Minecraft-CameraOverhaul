@@ -10,11 +10,15 @@ public final class CameraSystem {
 	private static final double BASE_HORIZONTAL_VELOCITY_SMOOTHING = 0.008d;
 
 	private ConfigData config;
-	private Vector3d prevCameraEulerRot = new Vector3d();
+	private final Vector3d prevCameraEulerRot = new Vector3d();
+	private final Vector3d prevEntityVelocity = new Vector3d();
+	private double lastCameraMovementTime;
+	private double lastEntityMovementTime;
 	private CameraContext.Perspective prevCameraPerspective;
 	private final Transform offsetTransform = new Transform();
 
 	public void onCameraUpdate(CameraContext context, double deltaTime) {
+		var time = TimeSystem.getTime();
 		config = Configuration.get();
 
 		// Reset the offset transform
@@ -25,13 +29,19 @@ public final class CameraSystem {
 			return;
 		}
 
+		if (!context.velocity.equals(prevEntityVelocity)) lastEntityMovementTime = time;
+		if (!context.transform.eulerRot.equals(prevCameraEulerRot)) lastCameraMovementTime = time;
+
 		// X
 		verticalVelocityPitchOffset(context, offsetTransform, deltaTime);
 		forwardVelocityPitchOffset(context, offsetTransform, deltaTime);
 		// Z
 		turningRollOffset(context, offsetTransform, deltaTime);
 		strafingRollOffset(context, offsetTransform, deltaTime);
+		// XY
+		noiseOffset(context, offsetTransform, deltaTime);
 
+		prevEntityVelocity.set(context.velocity);
 		prevCameraEulerRot.set(context.transform.eulerRot);
 		prevCameraPerspective = context.perspective;
 	}
@@ -114,5 +124,48 @@ public final class CameraSystem {
 
 		outputTransform.eulerRot.z += offset;
 		prevStrafingRollOffset = offset;
+	}
+
+	private static final double BASE_CAMERASWAY_MULTIPLIER = 0.60d;
+	private static final double BASE_CAMERASWAY_FREQUENCY = 0.16d;
+	private static final double BASE_CAMERASWAY_FADEIN_DELAY = 0.15d;
+	private static final double BASE_CAMERASWAY_FADEIN_LENGTH = 5.0d;
+	private static final double BASE_CAMERASWAY_FADEOUT_LENGTH = 0.75d;
+	private static final double CAMERASWAY_FADING_SMOOTHNESS = 3.0d;
+	private double cameraSwayFactor;
+	private double cameraSwayFactorTarget;
+	private void noiseOffset(CameraContext context, Transform outputTransform, double deltaTime) {
+		double intensity = BASE_CAMERASWAY_MULTIPLIER * config.cameraSwayIntensity;
+		double frequency = BASE_CAMERASWAY_FREQUENCY * config.cameraSwayFrequency;
+		double fadeInDelay = BASE_CAMERASWAY_FADEIN_DELAY * config.cameraSwayFadeInDelay;
+		double time = TimeSystem.getTime();
+		float noiseX = (float)(time * frequency);
+
+		var cameraMovedRecently = (time - lastCameraMovementTime) < fadeInDelay;
+		var entityMovedRecently = (time - lastEntityMovementTime) < fadeInDelay;
+		var anythingMovedRecently = cameraMovedRecently || entityMovedRecently;
+		// Only start a fade-in after the last fade-out has ended.
+		if (anythingMovedRecently) {
+			cameraSwayFactorTarget = 0d; // Fade-out
+		} else if (cameraSwayFactor == cameraSwayFactorTarget) {
+			cameraSwayFactorTarget = 1d; // Fade-in
+		}
+
+		var cameraSwayFactorFadeLength = (cameraSwayFactorTarget > 0d
+			? (BASE_CAMERASWAY_FADEIN_LENGTH * config.cameraSwayFadeInLength)
+			: (BASE_CAMERASWAY_FADEOUT_LENGTH * config.cameraSwayFadeOutLength)
+		);
+		var cameraSwayFactorFadeStep = cameraSwayFactorFadeLength > 0.0 ? deltaTime / cameraSwayFactorFadeLength : 1.0;
+		cameraSwayFactor = MathUtils.stepTowards(cameraSwayFactor, cameraSwayFactorTarget, cameraSwayFactorFadeStep);
+
+		var scaledIntensity = intensity * Math.pow(cameraSwayFactor, CAMERASWAY_FADING_SMOOTHNESS);
+		var target = new Vector3d(scaledIntensity, scaledIntensity, 0.0);
+		var noise = new Vector3d(
+			SimplexNoise.noise(noiseX, 420),
+			SimplexNoise.noise(noiseX, 1337),
+			SimplexNoise.noise(noiseX, 6969)
+		);
+
+		outputTransform.eulerRot.add(noise.mul(target));
 	}
 }

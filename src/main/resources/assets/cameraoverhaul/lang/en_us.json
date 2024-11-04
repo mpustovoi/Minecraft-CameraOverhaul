@@ -26,5 +26,16 @@
 	"cameraoverhaul.config.horizontalvelocitysmoothingfactor.name": "Horizontal Velocity Smoothing Factor",
 	"cameraoverhaul.config.horizontalvelocitysmoothingfactor.tooltip": "Controls the smoothness of camera pitch & roll rotations caused by moving horizontally.",
 	"cameraoverhaul.config.verticalvelocitysmoothingfactor.name": "Vertical Velocity Smoothing Factor",
-	"cameraoverhaul.config.verticalvelocitysmoothingfactor.tooltip": "Controls the smoothness of camera pitch rotations caused by moving vertically."
+	"cameraoverhaul.config.verticalvelocitysmoothingfactor.tooltip": "Controls the smoothness of camera pitch rotations caused by moving vertically.",
+
+	"cameraoverhaul.config.cameraswayintensity.name": "Camera Sway Intensity",
+	"cameraoverhaul.config.cameraswayintensity.tooltip": "The strength of smooth random sway that kicks in when the player idles for enough time.",
+	"cameraoverhaul.config.cameraswayfrequency.name": "Camera Sway Frequency",
+	"cameraoverhaul.config.cameraswayfrequency.tooltip": "The frequency of smooth random sway that kicks in when the player idles for enough time.",
+	"cameraoverhaul.config.cameraswayfadeindelay.name": "Camera Sway Fade-in Delay",
+	"cameraoverhaul.config.cameraswayfadeindelay.tooltip": "The amount of time that the player must idle for before smooth random sway starts to fade-in.",
+	"cameraoverhaul.config.cameraswayfadeinlength.name": "Camera Sway Fade-In Length",
+	"cameraoverhaul.config.cameraswayfadeinlength.tooltip": "The amount of time it takes for smooth random sway to fade-in after the player idles for enough time.",
+	"cameraoverhaul.config.cameraswayfadeoutlength.name": "Camera Sway Fade-Out Length",
+	"cameraoverhaul.config.cameraswayfadeoutlength.tooltip": "The amount of time it takes for smooth random sway to fade-out when the player starts moving after idling."
 }

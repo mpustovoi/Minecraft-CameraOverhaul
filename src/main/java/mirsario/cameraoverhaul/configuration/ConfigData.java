@@ -19,4 +19,10 @@ public class ConfigData {
 	// Smoothing factors
 	public float horizontalVelocitySmoothingFactor = 1.0f;
 	public float verticalVelocitySmoothingFactor = 1.0f;
+	// Sway
+	public float cameraSwayIntensity = 1.0f;
+	public float cameraSwayFrequency = 1.0f;
+	public float cameraSwayFadeInDelay = 1.0f;
+	public float cameraSwayFadeInLength = 1.0f;
+	public float cameraSwayFadeOutLength = 1.0f;
 }

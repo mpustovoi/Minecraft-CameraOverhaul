@@ -5,6 +5,11 @@ public final class TimeSystem {
 	private static long previous;
 	private static long current;
 	private static double deltaTime;
+	private static double accumulatedTime;
+
+	public static double getTime() {
+		return accumulatedTime;
+	}
 
 	public static double getDeltaTime() {
 		return deltaTime;
@@ -19,5 +24,6 @@ public final class TimeSystem {
 		}
 
 		deltaTime = (current - previous) / 1_000_000_000d;
+		accumulatedTime += deltaTime;
 	}
 }

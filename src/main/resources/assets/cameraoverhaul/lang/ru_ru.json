@@ -26,5 +26,16 @@
 	"cameraoverhaul.config.horizontalvelocitysmoothingfactor.name": "Коэффициент сглаживания горизонтальной скорости",
 	"cameraoverhaul.config.horizontalvelocitysmoothingfactor.tooltip": "Управляет плавностью поворота камеры по тангажу и крену от горизонтального перемещения.",
 	"cameraoverhaul.config.verticalvelocitysmoothingfactor.name": "Коэффициент сглаживания вертикальной скорости",
-	"cameraoverhaul.config.verticalvelocitysmoothingfactor.tooltip": "Управляет плавностью изменения угла наклона камеры, вызванного перемещением по вертикали."
+	"cameraoverhaul.config.verticalvelocitysmoothingfactor.tooltip": "Управляет плавностью изменения угла наклона камеры, вызванного перемещением по вертикали.",
+
+	"cameraoverhaul.config.cameraswayintensity.name": "Camera Sway Intensity",
+	"cameraoverhaul.config.cameraswayintensity.tooltip": "The strength of smooth random sway that kicks in when the player idles for enough time.",
+	"cameraoverhaul.config.cameraswayfrequency.name": "Camera Sway Frequency",
+	"cameraoverhaul.config.cameraswayfrequency.tooltip": "The frequency of smooth random sway that kicks in when the player idles for enough time.",
+	"cameraoverhaul.config.cameraswayfadeindelay.name": "Camera Sway Fade-in Delay",
+	"cameraoverhaul.config.cameraswayfadeindelay.tooltip": "The amount of time that the player must idle for before smooth random sway starts to fade-in.",
+	"cameraoverhaul.config.cameraswayfadeinlength.name": "Camera Sway Fade-In Length",
+	"cameraoverhaul.config.cameraswayfadeinlength.tooltip": "The amount of time it takes for smooth random sway to fade-in after the player idles for enough time.",
+	"cameraoverhaul.config.cameraswayfadeoutlength.name": "Camera Sway Fade-Out Length",
+	"cameraoverhaul.config.cameraswayfadeoutlength.tooltip": "The amount of time it takes for smooth random sway to fade-out when the player starts moving after idling."
 }
