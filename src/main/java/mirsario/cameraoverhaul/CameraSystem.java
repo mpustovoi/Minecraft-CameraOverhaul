@@ -25,7 +25,7 @@ public final class CameraSystem {
 		offsetTransform.position = new Vector3d(0, 0, 0);
 		offsetTransform.eulerRot = new Vector3d(0, 0, 0);
 
-		if (!config.enabled) {
+		if (!config.enabled || (!config.enableInThirdPerson && context.perspective != CameraContext.Perspective.FIRST_PERSON)) {
 			return;
 		}
 

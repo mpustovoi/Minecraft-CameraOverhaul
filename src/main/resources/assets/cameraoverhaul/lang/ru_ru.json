@@ -1,8 +1,11 @@
 {
 	"cameraoverhaul.config.title": "Настройки Camera Overhaul",
 	"cameraoverhaul.config.category.general": "Общие",
+
 	"cameraoverhaul.config.enabled.name": "Включить эффекты мода",
 	"cameraoverhaul.config.enabled.tooltip": "Переключает все функции мода.",
+	"cameraoverhaul.config.enableinthirdperson.name": "Enable In Third Person",
+	"cameraoverhaul.config.enableinthirdperson.tooltip": "Disable this to make the mod's effects exclusive to first-person view.",
 
 	"cameraoverhaul.config.strafingrollfactor.name": "Коэффициент крена при боковом движении",
 	"cameraoverhaul.config.strafingrollfactor.tooltip": "Управляет силой крена камеры, вызванной боковым движением.",

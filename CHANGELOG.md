@@ -19,6 +19,7 @@
 - The mod has been rewritten for easier maintenance & scaling. Single-JAR version agnosticism based on 'reflection spam' has been sacrificed in favor of classic separate JARs tied to specific MC version ranges, but still produced out of a single codebase using preprocessors. An effort will still be made to support as many versions of Minecraft as possible, out of one codebase.
 - Added `Camera Sway` feature - noise-based camera offsets that kick in once you don't move your camera and legs for a short moment. Configurable with `Intensity`, `Frequency`, `Fade-In Delay`, `Fade-In Length`, and `Fade-Out Length`.
 - Completely reworked the `Yaw Delta Roll` feature, now known as `Mouselook Roll`. Configurable in 3 components - `Intensity`, `Accumulation`, and `Decay Smoothness`.
+- Added a separate toggle for the mod's effects while in third person.
 - Base intensity values modified once again. Default values now all equal to 1.0 or -1.0.
 - Russian config localization, courtesy of `@mpustovoi`.
 

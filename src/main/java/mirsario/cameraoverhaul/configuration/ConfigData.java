@@ -3,8 +3,10 @@ package mirsario.cameraoverhaul.configuration;
 public class ConfigData {
 	public static final int CONFIG_VERSION = 2;
 
-	public boolean enabled = true;
 	public int configVersion;
+	// Toggles
+	public boolean enabled = true;
+	public boolean enableInThirdPerson = true;
 	// Strafing Roll
 	public float strafingRollFactor = 1.0f;
 	public float strafingRollFactorWhenFlying = -1.0f;
