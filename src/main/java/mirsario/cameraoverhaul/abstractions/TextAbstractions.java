@@ -16,9 +16,10 @@ public final class TextAbstractions {
 	}
 
 	public static String getTextValue(String key) { return TextAbstractions.createText(key).getString(); }
+
 	//? if >=1.17 {
-		public static net.minecraft.network.chat.Component getText(String key) { return TextAbstractions.createText(key); }
+	public static net.minecraft.network.chat.Component getText(String key) { return TextAbstractions.createText(key); }
 	//?} else
-		/*public static String getText(String key) { return TextAbstractions.createText(key).getString(); }*/
+	/*public static String getText(String key) { return TextAbstractions.createText(key).getString(); }*/
 }
 //?}

@@ -58,7 +58,7 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 		var entryBuilder = builder.entryBuilder();
 
 		for (var field : objCurrent.getClass().getFields()) {
-			var fieldName = field.getName().toLowerCase();
+			var fieldName = field.getName();
 			var fieldType = field.getType();
 			var name = TextAbstractions.getText(Configuration.getNameKey(fieldName));
 			var desc = TextAbstractions.getText(Configuration.getDescKey(fieldName));

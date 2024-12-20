@@ -55,8 +55,8 @@ public final class Configuration {
 		}
 	}
 
-	public static String getNameKey(String identifier) { return CONFIG_ENTRIES_PREFIX + "." + identifier.toLowerCase() + ".name"; }
-	public static String getDescKey(String identifier) { return CONFIG_ENTRIES_PREFIX + "." + identifier.toLowerCase() + ".tooltip"; }
+	public static String getNameKey(String identifier) { return CONFIG_ENTRIES_PREFIX + "." + identifier + ".name"; }
+	public static String getDescKey(String identifier) { return CONFIG_ENTRIES_PREFIX + "." + identifier + ".desc"; }
 
 	// Very basic, made for one purpose.
 	private static void writeCommentedFieldsToml(BufferedWriter writer, Object objCurrent, Object objDefault, int indentation) throws IllegalAccessException, IOException {

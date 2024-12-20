@@ -20,7 +20,7 @@
 - Added `Camera Sway` feature - noise-based camera offsets that kick in once you don't move your camera and legs for a short moment. Configurable with `Intensity`, `Frequency`, `Fade-In Delay`, `Fade-In Length`, and `Fade-Out Length`.
 - Completely reworked the `Yaw Delta Roll` feature, now known as `Mouselook Roll`. Configurable in 3 components - `Intensity`, `Accumulation`, and `Decay Smoothness`.
 - Configuration expanded and reworked. Many more separate values now exist for walking, swimming, and elytra flight. The `cameraoverhaul.json` file has been replaced with `cameraoverhaul.toml`, which is much more human-writable, as every present field there is now properly commented. ModMenu-based in-game configuration now makes use of categories.
-- The mod's features now apply when using minecarts, boats, horses, and other rideables. Values for those are confiured separately.
+- The mod's features now apply when using minecarts, boats, horses, and other rideables. Values for those are configured separately.
 - Added a separate toggle for the mod's effects while in third person.
 - Russian config localization, courtesy of `@mpustovoi`.
 
