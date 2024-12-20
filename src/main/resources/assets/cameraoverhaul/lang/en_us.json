@@ -1,7 +1,12 @@
 {
 	"cameraoverhaul.config.title": "CameraOverhaul Settings",
 	"cameraoverhaul.config.category.general": "General",
+	"cameraoverhaul.config.category.walking": "Walking",
+	"cameraoverhaul.config.category.flying": "Flying",
+	"cameraoverhaul.config.category.swimming": "Swimming",
 
+	"cameraoverhaul.config.configversion.name": "Config Version",
+	"cameraoverhaul.config.configversion.tooltip": "Metadata, do not modify.",
 	"cameraoverhaul.config.enabled.name": "Enable the mod's effects",
 	"cameraoverhaul.config.enabled.tooltip": "Toggles all of the mod's features.",
 	"cameraoverhaul.config.enableinthirdperson.name": "Enable In Third Person",
@@ -9,10 +14,6 @@
 
 	"cameraoverhaul.config.strafingrollfactor.name": "Strafing Roll Factor",
 	"cameraoverhaul.config.strafingrollfactor.tooltip": "Controls the strength of the camera roll rotation caused by strafing, or sideway horizontal velocity.",
-	"cameraoverhaul.config.strafingrollfactorwhenflying.name": "Strafing Roll Factor When Elytra Flying",
-	"cameraoverhaul.config.strafingrollfactorwhenflying.tooltip": "Controls the strength of the camera roll rotation when flying with an elytra",
-	"cameraoverhaul.config.strafingrollfactorwhenswimming.name": "Strafing Roll Factor When Swimming",
-	"cameraoverhaul.config.strafingrollfactorwhenswimming.tooltip": "Controls the strength of the camera roll rotation when swimming",
 
 	"cameraoverhaul.config.turningrollaccumulation.name": "Mouselook Roll Accumulation",
 	"cameraoverhaul.config.turningrollaccumulation.tooltip": "Controls the sensitivity of the camera roll rotation caused by turning around horizontally.",

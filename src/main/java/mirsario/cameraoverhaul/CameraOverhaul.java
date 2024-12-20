@@ -12,7 +12,6 @@ public final class CameraOverhaul {
 	public CameraSystem system;
 
 	public void onInitializeClient() {
-		Configuration.loadConfig();
 		system = new CameraSystem();
 	}
 }

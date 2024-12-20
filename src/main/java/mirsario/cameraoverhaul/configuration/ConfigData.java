@@ -1,30 +1,42 @@
 package mirsario.cameraoverhaul.configuration;
 
-public class ConfigData {
+public final class ConfigData {
+	public static final class General {
+		public boolean enabled = true;
+		public boolean enableInThirdPerson = true;
+		// Turning Roll
+		public double turningRollAccumulation = 1.0;
+		public double turningRollIntensity = 1.25;
+		public double turningRollSmoothing = 1.0;
+		// Sway
+		public double cameraSwayIntensity = 0.60;
+		public double cameraSwayFrequency = 0.16;
+		public double cameraSwayFadeInDelay = 0.15;
+		public double cameraSwayFadeInLength = 5.0;
+		public double cameraSwayFadeOutLength = 0.75;
+	}
+	public static final class Contextual {
+		public double strafingRollFactor = 10.0;
+		public double forwardVelocityPitchFactor = 7.0;
+		public double verticalVelocityPitchFactor = 2.5;
+		public double horizontalVelocitySmoothingFactor = 1.0;
+		public double verticalVelocitySmoothingFactor = 1.0;
+	}
+
 	public static final int CONFIG_VERSION = 2;
 
 	public int configVersion;
-	// Toggles
-	public boolean enabled = true;
-	public boolean enableInThirdPerson = true;
-	// Strafing Roll
-	public float strafingRollFactor = 1.0f;
-	public float strafingRollFactorWhenFlying = -1.0f;
-	public float strafingRollFactorWhenSwimming = -1.0f;
-	// Turning Roll
-	public float turningRollAccumulation = 1.0f;
-	public float turningRollIntensity = 1.0f;
-	public float turningRollSmoothing = 1.0f;
-	// Pitch factors
-	public float verticalVelocityPitchFactor = 1.0f;
-	public float forwardVelocityPitchFactor = 1.0f;
-	// Smoothing factors
-	public float horizontalVelocitySmoothingFactor = 1.0f;
-	public float verticalVelocitySmoothingFactor = 1.0f;
-	// Sway
-	public float cameraSwayIntensity = 1.0f;
-	public float cameraSwayFrequency = 1.0f;
-	public float cameraSwayFadeInDelay = 1.0f;
-	public float cameraSwayFadeInLength = 1.0f;
-	public float cameraSwayFadeOutLength = 1.0f;
+	public General general = new General();
+	public Contextual walking = new Contextual();
+	public Contextual flying = new Contextual();
+	public Contextual swimming = new Contextual();
+
+	public ConfigData() {
+		// Flying
+		flying.strafingRollFactor *= -1.0;
+		// Swimming
+		swimming.strafingRollFactor *= -3.0;
+		swimming.forwardVelocityPitchFactor *= 3.0;
+		swimming.verticalVelocityPitchFactor *= 3.0;
+	}
 }

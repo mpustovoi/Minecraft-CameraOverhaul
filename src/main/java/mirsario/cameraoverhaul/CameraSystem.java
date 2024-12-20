@@ -2,14 +2,13 @@ package mirsario.cameraoverhaul;
 
 import mirsario.cameraoverhaul.configuration.*;
 import mirsario.cameraoverhaul.utilities.*;
-import org.joml.*;
-import java.lang.Math;
+import org.joml.Vector3d;
+import org.joml.SimplexNoise;
 
 @SuppressWarnings("unused")
 public final class CameraSystem {
-	private static final double BASE_HORIZONTAL_VELOCITY_SMOOTHING = 0.008d;
-
-	private ConfigData config;
+	private ConfigData cfg;
+	private ConfigData.Contextual ctxCfg;
 	private final Vector3d prevCameraEulerRot = new Vector3d();
 	private final Vector3d prevEntityVelocity = new Vector3d();
 	private double lastCameraMovementTime;
@@ -19,13 +18,20 @@ public final class CameraSystem {
 
 	public void onCameraUpdate(CameraContext context, double deltaTime) {
 		var time = TimeSystem.getTime();
-		config = Configuration.get();
+		cfg = Configuration.get();
+		if (context.isSwimming) {
+			ctxCfg = cfg.swimming;
+		} else if (context.isFlying) {
+			ctxCfg = cfg.flying;
+		} else {
+			ctxCfg = cfg.walking;
+		}
 
 		// Reset the offset transform
 		offsetTransform.position = new Vector3d(0, 0, 0);
 		offsetTransform.eulerRot = new Vector3d(0, 0, 0);
 
-		if (!config.enabled || (!config.enableInThirdPerson && context.perspective != CameraContext.Perspective.FIRST_PERSON)) {
+		if (!cfg.general.enabled || (!cfg.general.enableInThirdPerson && context.perspective != CameraContext.Perspective.FIRST_PERSON)) {
 			return;
 		}
 
@@ -50,12 +56,11 @@ public final class CameraSystem {
 		transform.eulerRot.add(offsetTransform.eulerRot);
 	}
 
-	private static final double BASE_VERTICAL_PITCH_MULTIPLIER = 2.50d;
-	private static final double BASE_VERTICAL_PITCH_SMOOTHING = 0.00004d;
+	private static final double BASE_VERTICAL_PITCH_SMOOTHING = 0.00004;
 	private double prevVerticalVelocityPitchOffset;
 	private void verticalVelocityPitchOffset(CameraContext context, Transform outputTransform, double deltaTime) {
-		double multiplier = BASE_VERTICAL_PITCH_MULTIPLIER * config.verticalVelocityPitchFactor;
-		double smoothing = BASE_VERTICAL_PITCH_SMOOTHING * config.verticalVelocitySmoothingFactor;
+		double multiplier = ctxCfg.verticalVelocityPitchFactor;
+		double smoothing = BASE_VERTICAL_PITCH_SMOOTHING * ctxCfg.verticalVelocitySmoothingFactor;
 
 		double targetOffset = context.velocity.y * multiplier;
 		double currentOffset = MathUtils.damp(prevVerticalVelocityPitchOffset, targetOffset, smoothing, deltaTime);
@@ -64,12 +69,11 @@ public final class CameraSystem {
 		prevVerticalVelocityPitchOffset = currentOffset;
 	}
 
-	private static final double BASE_FORWARD_PITCH_MULTIPLIER = 7.00d;
-	private static final double BASE_FORWARD_PITCH_SMOOTHING = BASE_HORIZONTAL_VELOCITY_SMOOTHING;
+	private static final double BASE_FORWARD_PITCH_SMOOTHING = 0.008;
 	private double prevForwardVelocityPitchOffset;
 	private void forwardVelocityPitchOffset(CameraContext context, Transform outputTransform, double deltaTime) {
-		double multiplier = BASE_FORWARD_PITCH_MULTIPLIER * config.forwardVelocityPitchFactor;
-		double smoothing = BASE_FORWARD_PITCH_SMOOTHING * config.horizontalVelocitySmoothingFactor;
+		double multiplier = ctxCfg.forwardVelocityPitchFactor;
+		double smoothing = BASE_FORWARD_PITCH_SMOOTHING * ctxCfg.horizontalVelocitySmoothingFactor;
 
 		double targetOffset = context.getForwardRelativeVelocity().z * multiplier;
 		double currentOffset = MathUtils.damp(prevForwardVelocityPitchOffset, targetOffset, smoothing, deltaTime);
@@ -78,21 +82,21 @@ public final class CameraSystem {
 		prevForwardVelocityPitchOffset = currentOffset;
 	}
 
-	private static final double BASE_TURNING_ROLL_ACCUMULATION = 0.0048d;
-	private static final double BASE_TURNING_ROLL_INTENSITY = 1.25d;
-	private static final double BASE_TURNING_ROLL_SMOOTHING = 0.0825d;
+	private static final double BASE_TURNING_ROLL_ACCUMULATION = 0.0048;
+	private static final double BASE_TURNING_ROLL_INTENSITY = 1.25;
+	private static final double BASE_TURNING_ROLL_SMOOTHING = 0.0825;
 	private double turningRollTargetOffset;
 	private void turningRollOffset(CameraContext context, Transform outputTransform, double deltaTime) {
-		double decaySmoothing = BASE_TURNING_ROLL_SMOOTHING * config.turningRollSmoothing;
-		double intensity = BASE_TURNING_ROLL_INTENSITY * config.turningRollIntensity;
-		double accumulation = BASE_TURNING_ROLL_ACCUMULATION * config.turningRollAccumulation;
+		double decaySmoothing = BASE_TURNING_ROLL_SMOOTHING * cfg.general.turningRollSmoothing;
+		double intensity = BASE_TURNING_ROLL_INTENSITY * cfg.general.turningRollIntensity;
+		double accumulation = BASE_TURNING_ROLL_ACCUMULATION * cfg.general.turningRollAccumulation;
 		double yawDelta = prevCameraEulerRot.y - context.transform.eulerRot.y;
 
 		// Don't spazz out when switching perspectives.
 		if (context.perspective != prevCameraPerspective) yawDelta = 0.0;
 
 		// Decay
-		turningRollTargetOffset = MathUtils.damp(turningRollTargetOffset, 0d, decaySmoothing, deltaTime);
+		turningRollTargetOffset = MathUtils.damp(turningRollTargetOffset, 0, decaySmoothing, deltaTime);
 		// Accumulation
 		turningRollTargetOffset = MathUtils.clamp(turningRollTargetOffset + (yawDelta * accumulation), -1.0, 1.0);
 		// Apply
@@ -104,20 +108,11 @@ public final class CameraSystem {
 		return x < 0.5 ? (4 * x * x * x) : (1 - Math.pow(-2 * x + 2, 3) / 2);
 	}
 
-	private static final double BASE_STRAFING_ROLL_MULTIPLIER = 14.00d;
-	private static final double BASE_STRAFING_ROLL_SMOOTHING = BASE_HORIZONTAL_VELOCITY_SMOOTHING;
+	private static final double BASE_STRAFING_ROLL_SMOOTHING = 0.008;
 	private double prevStrafingRollOffset;
 	private void strafingRollOffset(CameraContext context, Transform outputTransform, double deltaTime) {
-		double multiplier = BASE_STRAFING_ROLL_MULTIPLIER;
-		double smoothing = BASE_STRAFING_ROLL_SMOOTHING * config.horizontalVelocitySmoothingFactor;
-
-		if (context.isFlying) {
-			multiplier *= config.strafingRollFactorWhenFlying;
-		} else if (context.isSwimming) {
-			multiplier *= config.strafingRollFactorWhenSwimming;
-		} else {
-			multiplier *= config.strafingRollFactor;
-		}
+		double multiplier = ctxCfg.strafingRollFactor;
+		double smoothing = BASE_STRAFING_ROLL_SMOOTHING * ctxCfg.horizontalVelocitySmoothingFactor;
 
 		double target = -context.getForwardRelativeVelocity().x * multiplier;
 		double offset = MathUtils.damp(prevStrafingRollOffset, target, smoothing, deltaTime);
@@ -126,39 +121,28 @@ public final class CameraSystem {
 		prevStrafingRollOffset = offset;
 	}
 
-	private static final double BASE_CAMERASWAY_MULTIPLIER = 0.60d;
-	private static final double BASE_CAMERASWAY_FREQUENCY = 0.16d;
-	private static final double BASE_CAMERASWAY_FADEIN_DELAY = 0.15d;
-	private static final double BASE_CAMERASWAY_FADEIN_LENGTH = 5.0d;
-	private static final double BASE_CAMERASWAY_FADEOUT_LENGTH = 0.75d;
-	private static final double CAMERASWAY_FADING_SMOOTHNESS = 3.0d;
+	private static final double CAMERASWAY_FADING_SMOOTHNESS = 3.0;
 	private double cameraSwayFactor;
 	private double cameraSwayFactorTarget;
 	private void noiseOffset(CameraContext context, Transform outputTransform, double deltaTime) {
-		double intensity = BASE_CAMERASWAY_MULTIPLIER * config.cameraSwayIntensity;
-		double frequency = BASE_CAMERASWAY_FREQUENCY * config.cameraSwayFrequency;
-		double fadeInDelay = BASE_CAMERASWAY_FADEIN_DELAY * config.cameraSwayFadeInDelay;
 		double time = TimeSystem.getTime();
-		float noiseX = (float)(time * frequency);
+		float noiseX = (float)(time * cfg.general.cameraSwayFrequency);
 
-		var cameraMovedRecently = (time - lastCameraMovementTime) < fadeInDelay;
-		var entityMovedRecently = (time - lastEntityMovementTime) < fadeInDelay;
+		var cameraMovedRecently = (time - lastCameraMovementTime) < cfg.general.cameraSwayFadeInDelay;
+		var entityMovedRecently = (time - lastEntityMovementTime) < cfg.general.cameraSwayFadeInDelay;
 		var anythingMovedRecently = cameraMovedRecently || entityMovedRecently;
 		// Only start a fade-in after the last fade-out has ended.
 		if (anythingMovedRecently) {
-			cameraSwayFactorTarget = 0d; // Fade-out
+			cameraSwayFactorTarget = 0; // Fade-out
 		} else if (cameraSwayFactor == cameraSwayFactorTarget) {
-			cameraSwayFactorTarget = 1d; // Fade-in
+			cameraSwayFactorTarget = 1; // Fade-in
 		}
 
-		var cameraSwayFactorFadeLength = (cameraSwayFactorTarget > 0d
-			? (BASE_CAMERASWAY_FADEIN_LENGTH * config.cameraSwayFadeInLength)
-			: (BASE_CAMERASWAY_FADEOUT_LENGTH * config.cameraSwayFadeOutLength)
-		);
+		var cameraSwayFactorFadeLength = cameraSwayFactorTarget > 0 ? cfg.general.cameraSwayFadeInLength : cfg.general.cameraSwayFadeOutLength;
 		var cameraSwayFactorFadeStep = cameraSwayFactorFadeLength > 0.0 ? deltaTime / cameraSwayFactorFadeLength : 1.0;
 		cameraSwayFactor = MathUtils.stepTowards(cameraSwayFactor, cameraSwayFactorTarget, cameraSwayFactorFadeStep);
 
-		var scaledIntensity = intensity * Math.pow(cameraSwayFactor, CAMERASWAY_FADING_SMOOTHNESS);
+		var scaledIntensity = cfg.general.cameraSwayIntensity * Math.pow(cameraSwayFactor, CAMERASWAY_FADING_SMOOTHNESS);
 		var target = new Vector3d(scaledIntensity, scaledIntensity, 0.0);
 		var noise = new Vector3d(
 			SimplexNoise.noise(noiseX, 420),

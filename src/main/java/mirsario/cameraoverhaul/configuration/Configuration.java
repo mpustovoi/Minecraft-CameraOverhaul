@@ -2,19 +2,25 @@ package mirsario.cameraoverhaul.configuration;
 
 import com.moandjiezana.toml.*;
 import java.io.*;
+import java.lang.reflect.*;
 import java.nio.file.*;
 import mirsario.cameraoverhaul.*;
+import mirsario.cameraoverhaul.abstractions.*;
 import net.fabricmc.loader.api.*;
 
 public final class Configuration {
 	private static final Path CONFIG_DIR = FabricLoader.getInstance().getConfigDir();
 	private static final Path CONFIG_PATH = CONFIG_DIR.resolve(CameraOverhaul.MOD_ID + ".toml");
+	private static final String CONFIG_ENTRIES_PREFIX = "cameraoverhaul.config";
 	private static final Toml TOML = new Toml();
 	private static final ConfigData configDefault = new ConfigData();
 	private static ConfigData configCurrent;
 
-	public static ConfigData get() { return configCurrent; }
 	public static ConfigData getDefault() { return configDefault; }
+	public static ConfigData get() {
+		if (configCurrent == null) loadConfig();
+		return configCurrent;
+	}
 
 	public static void loadConfig() {
 		var file = CONFIG_PATH.toFile();
@@ -39,9 +45,49 @@ public final class Configuration {
 		configCurrent.configVersion = ConfigData.CONFIG_VERSION;
 
 		try (BufferedWriter writer = Files.newBufferedWriter(CONFIG_PATH)) {
-			new TomlWriter().write(configCurrent, writer);
-		} catch (IOException e) {
+			writeCommentedFieldsToml(writer, configCurrent, configDefault, 0);
+		} catch (Exception e) {
 			CameraOverhaul.LOGGER.error("Failed to save config file", e);
 		}
+	}
+
+	public static String getNameKey(String identifier) { return CONFIG_ENTRIES_PREFIX + "." + identifier.toLowerCase() + ".name"; }
+	public static String getDescKey(String identifier) { return CONFIG_ENTRIES_PREFIX + "." + identifier.toLowerCase() + ".tooltip"; }
+
+	// Very basic, made for one purpose.
+	private static void writeCommentedFieldsToml(BufferedWriter writer, Object objCurrent, Object objDefault, int indentation) throws IllegalAccessException, IOException {
+		for (var field : objCurrent.getClass().getFields()) {
+			if (Modifier.isStatic(field.getModifiers())) continue;
+
+			if (!field.getType().isPrimitive() && field.getType() != String.class) {
+				writer.write("\r\n");
+				writer.write("[");
+				writer.write(field.getName());
+				writer.write("]");
+				writer.write("\r\n");
+				writer.write("\r\n");
+				writeCommentedFieldsToml(writer, field.get(objCurrent), field.get(objDefault), indentation + 1);
+				continue;
+			}
+
+			indent(writer, indentation);
+			writer.write("# ");
+			writer.write(TextAbstractions.getTextValue(getDescKey(field.getName())));
+			newLine(writer, indentation);
+			writer.write("# Default: ");
+			writer.write(field.get(objDefault).toString());
+			newLine(writer, indentation);
+			writer.write(field.getName());
+			writer.write(" = ");
+			writer.write(field.get(objCurrent).toString());
+			newLine(writer, 0);
+		}
+	}
+	private static void indent(BufferedWriter writer, int indentation) throws IOException {
+		for (int i = 0; i < indentation; i++) writer.write("\t");
+	}
+	private static void newLine(BufferedWriter writer, int indentation) throws IOException {
+		writer.write("\r\n");
+		indent(writer, indentation);
 	}
 }
