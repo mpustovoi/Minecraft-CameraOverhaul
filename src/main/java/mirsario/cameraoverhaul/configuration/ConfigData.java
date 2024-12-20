@@ -28,8 +28,10 @@ public final class ConfigData {
 	public int configVersion;
 	public General general = new General();
 	public Contextual walking = new Contextual();
-	public Contextual flying = new Contextual();
 	public Contextual swimming = new Contextual();
+	public Contextual flying = new Contextual();
+	public Contextual mounts = new Contextual();
+	public Contextual vehicles = new Contextual();
 
 	public ConfigData() {
 		// Flying
@@ -38,5 +40,12 @@ public final class ConfigData {
 		swimming.strafingRollFactor *= -3.0;
 		swimming.forwardVelocityPitchFactor *= 3.0;
 		swimming.verticalVelocityPitchFactor *= 3.0;
+		// Mounts
+		mounts.strafingRollFactor *= 2.0;
+		vehicles.forwardVelocityPitchFactor *= 0.5;
+		// Vehicles
+		vehicles.strafingRollFactor *= 0.5;
+		vehicles.forwardVelocityPitchFactor *= 0.5;
+		vehicles.verticalVelocityPitchFactor *= 2.0;
 	}
 }

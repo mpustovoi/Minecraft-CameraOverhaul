@@ -4,6 +4,8 @@
 	"cameraoverhaul.config.category.walking": "Ходьба",
 	"cameraoverhaul.config.category.flying": "Полёт",
 	"cameraoverhaul.config.category.swimming": "Плаванье",
+	"cameraoverhaul.config.category.mounts": "Верховая езда",
+	"cameraoverhaul.config.category.vehicles": "Транспорт",
 
 	"cameraoverhaul.config.configversion.name": "Версия конфигурации",
 	"cameraoverhaul.config.configversion.tooltip": "Мета-данные, не модифицировать.",

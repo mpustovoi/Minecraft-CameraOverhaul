@@ -12,6 +12,10 @@ public class CameraContext {
 
 	public boolean isSwimming;
 	public boolean isFlying;
+	public boolean isSprinting;
+	public boolean isRiding;
+	public boolean isRidingMount;
+	public boolean isRidingVehicle;
 	public Vector3d velocity;
 	public Perspective perspective;
 	public Transform transform = new Transform();

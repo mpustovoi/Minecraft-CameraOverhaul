@@ -4,6 +4,8 @@ package mirsario.cameraoverhaul.mixins;
 import mirsario.cameraoverhaul.*;
 import mirsario.cameraoverhaul.utilities.*;
 import net.minecraft.client.*;
+import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.vehicle.*;
 import org.joml.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -25,8 +27,18 @@ public abstract class CameraMixin {
 	@Inject(method = "setup", at = @At("RETURN"))
 	private void onCameraUpdate(BlockGetter area, Entity entity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
 		var system = CameraOverhaul.instance.system;
+		var vehicle = entity.getVehicle();
+		var controlledEntity = vehicle != null ? vehicle : entity;
+
 		var context = new CameraContext();
-		context.velocity = VectorUtils.toJoml(entity.getDeltaMovement());
+		context.isRiding = vehicle != null;
+		context.isRidingMount = vehicle instanceof Animal;
+		//? if >=1.20.3
+		context.isRidingVehicle = vehicle instanceof VehicleEntity;
+		//? if <1.20.3
+		/*context.isRidingVehicle = vehicle instanceof Boat || vehicle instanceof AbstractMinecart;*/
+
+		context.velocity = VectorUtils.toJoml(controlledEntity.getDeltaMovement());
 		context.transform = new Transform(
 			VectorUtils.toJoml(getPosition()),
 			new Vector3d(getXRot(), getYRot(), 0)
@@ -39,6 +51,7 @@ public abstract class CameraMixin {
 		if (entity instanceof LivingEntity) {
 			context.isFlying = ((LivingEntity)entity).isFallFlying();
 			context.isSwimming = entity.isSwimming();
+			context.isSprinting = entity.isSprinting();
 		}
 
 //? if <1.15 {

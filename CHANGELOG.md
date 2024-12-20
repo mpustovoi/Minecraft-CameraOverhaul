@@ -20,12 +20,14 @@
 - Added `Camera Sway` feature - noise-based camera offsets that kick in once you don't move your camera and legs for a short moment. Configurable with `Intensity`, `Frequency`, `Fade-In Delay`, `Fade-In Length`, and `Fade-Out Length`.
 - Completely reworked the `Yaw Delta Roll` feature, now known as `Mouselook Roll`. Configurable in 3 components - `Intensity`, `Accumulation`, and `Decay Smoothness`.
 - Configuration expanded and reworked. Many more separate values now exist for walking, swimming, and elytra flight. The `cameraoverhaul.json` file has been replaced with `cameraoverhaul.toml`, which is much more human-writable, as every present field there is now properly commented. ModMenu-based in-game configuration now makes use of categories.
+- The mod's features now apply when using minecarts, boats, horses, and other rideables. Values for those are confiured separately.
 - Added a separate toggle for the mod's effects while in third person.
 - Russian config localization, courtesy of `@mpustovoi`.
 
 **Fixes:**
 - Fixed the mod using incorrect values for time deltas. Oopsie doopsie.
 - Fixed issue [#43](https://github.com/Mirsario/Minecraft-CameraOverhaul/issues/43) (Toggling perspective (F5) causes camera to shake).
+- Fixed the camera sometimes shaking when riding in the second seat of a boat in multiplayer.
 
 # 1.4.1
 - Added compatibility with Minecraft `1.20.6`+ and `1.21`+ (Thanks, **@sam-mccarthy**!)

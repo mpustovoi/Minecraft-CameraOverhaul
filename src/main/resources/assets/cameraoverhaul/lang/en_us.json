@@ -4,6 +4,8 @@
 	"cameraoverhaul.config.category.walking": "Walking",
 	"cameraoverhaul.config.category.flying": "Flying",
 	"cameraoverhaul.config.category.swimming": "Swimming",
+	"cameraoverhaul.config.category.mounts": "Mounts",
+	"cameraoverhaul.config.category.vehicles": "Vehicles",
 
 	"cameraoverhaul.config.configversion.name": "Config Version",
 	"cameraoverhaul.config.configversion.tooltip": "Metadata, do not modify.",

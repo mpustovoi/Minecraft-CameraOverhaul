@@ -19,13 +19,12 @@ public final class CameraSystem {
 	public void onCameraUpdate(CameraContext context, double deltaTime) {
 		var time = TimeSystem.getTime();
 		cfg = Configuration.get();
-		if (context.isSwimming) {
-			ctxCfg = cfg.swimming;
-		} else if (context.isFlying) {
-			ctxCfg = cfg.flying;
-		} else {
-			ctxCfg = cfg.walking;
-		}
+
+		if (context.isRidingVehicle) ctxCfg = cfg.vehicles;
+		else if (context.isRidingMount) ctxCfg = cfg.mounts;
+		else if (context.isSwimming) ctxCfg = cfg.swimming;
+		else if (context.isFlying) ctxCfg = cfg.flying;
+		else ctxCfg = cfg.walking;
 
 		// Reset the offset transform
 		offsetTransform.position = new Vector3d(0, 0, 0);
