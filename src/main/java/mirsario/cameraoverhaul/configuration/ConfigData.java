@@ -22,6 +22,7 @@ public final class ConfigData {
 		public double screenShakesMaxIntensity = 2.5;
 		public double screenShakesMaxFrequency = 6.0;
 		public double explosionTrauma = 1.00;
+		public double thunderTrauma = 0.05;
 	}
 	public static final class Contextual {
 		public double strafingRollFactor = 10.0;

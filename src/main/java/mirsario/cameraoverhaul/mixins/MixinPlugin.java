@@ -16,6 +16,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
         "CameraMixin",
 		"ExplosionMixin",
         "GameRendererMixin",
+		"LightningBoltMixin",
     };
 
 	@Override
