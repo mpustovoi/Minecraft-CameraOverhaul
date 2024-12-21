@@ -1,3 +1,7 @@
+// Copyright 2020-2024 Mirsario & Contributors.
+// Released under the GNU General Public License 3.0.
+// See LICENSE.md for details.
+
 //? if FABRIC_LOADER && MC_RELEASE
 package mirsario.cameraoverhaul.fabric;
 

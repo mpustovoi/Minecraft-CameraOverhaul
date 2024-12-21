@@ -20,7 +20,9 @@ Set any factor to `0.0` to turn its feature off.<br/>
 Negative numbers are also usually legal, allowing inverting effects, if that's your thing.
 
 ## 📖 License
-All code of this repository is provided under [the MIT License](https://github.com/Mirsario/Minecraft-CameraOverhaul/blob/fabric-universal/LICENSE.md).
+Released under the [GNU General Public License 3.0](https://github.com/Mirsario/Minecraft-CameraOverhaul/blob/dev/LICENSE.md).
+<br/>
+Copyright (c) 2020-2024 Mirsario & Contributors.
 
 ## ❤️ Contributing
 This project uses the [Stonecutter](https://stonecutter.kikugie.dev) comment-macro preprocessor for multi-version support.
