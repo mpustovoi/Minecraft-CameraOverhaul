@@ -52,4 +52,6 @@
 	"cameraoverhaul.config.explosionTrauma.desc": "A [0..1] value linked to the strength of screen shaking caused by explosions.",
 	"cameraoverhaul.config.thunderTrauma.name": "Thunder Screen Shake Trauma",
 	"cameraoverhaul.config.thunderTrauma.desc": "A [0..1] value linked to the strength of screen shaking caused by lightning bolt-tied thunder.",
+	"cameraoverhaul.config.handSwingTrauma.name": "Hand Swing Screen Shake Trauma",
+	"cameraoverhaul.config.handSwingTrauma.desc": "A [0..1] value linked to the strength of screen shaking caused by any actions that swing the player's arm. Best kept very low."
 }
