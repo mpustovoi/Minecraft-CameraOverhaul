@@ -30,7 +30,7 @@ public abstract class CameraMixin {
 
 	@Inject(method = "setup", at = @At("RETURN"))
 	private void onCameraUpdate(BlockGetter area, Entity entity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-		var system = CameraOverhaul.instance.system;
+		var system = CameraOverhaul.camera;
 		var vehicle = entity.getVehicle();
 		var controlledEntity = vehicle != null ? vehicle : entity;
 

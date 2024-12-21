@@ -10,7 +10,6 @@ import mirsario.cameraoverhaul.abstractions.*;
 import mirsario.cameraoverhaul.utilities.*;
 import net.minecraft.client.*;
 import net.minecraft.client.renderer.*;
-import net.minecraft.world.phys.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
@@ -29,7 +28,7 @@ public abstract class GameRendererMixin {
 			new Vector3d(mainCamera.getXRot(), mainCamera.getYRot(), 0)
 		);
 
-		CameraOverhaul.instance.system.modifyCameraTransform(cameraTransform);
+		CameraOverhaul.camera.modifyCameraTransform(cameraTransform);
 
 		//matrix.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion((float)cameraTransform.eulerRot.z));
 		MathAbstractions.rotateMatrixByAxis(matrices, 0f, 0f, 1f, cameraTransform.eulerRot.z);

@@ -1,27 +1,32 @@
 # Navigation
 (Click on version number to jump to its changelog.)
 
-| Version									| Release Date |
-| ----------------------------------------- | ------------ |
-| [WIP](#wip)                               | `n/a`        |
-| [1.4.1](#141)                             | `2024.06.18` |
-| [1.4.0](#140)                             | `2022.12.27` |
-| [1.3.1](#131)								| `2022.07.23` |
-| [1.3.0](#130)								| `2021.10.21` |
-| [1.2.2](#122)								| `2020.12.28` |
-| [1.2.1](#121)								| `2020.12.26` |
-| [1.2.0](#120)								| `2020.12.25` |
-| [1.1.0](#110)								| `2020.12.24` |
-| [1.0.1](#101)								| `2020.12.06` |
-| [1.0.0](#100)								| `2020.11.30` |
+| Version                               | Release Date |
+|---------------------------------------| ------------ |
+| [Work In Progress](#work-in-progress) | `n/a`        |
+| [1.4.1](#141)                         | `2024.06.18` |
+| [1.4.0](#140)                         | `2022.12.27` |
+| [1.3.1](#131)                         | `2022.07.23` |
+| [1.3.0](#130)                         | `2021.10.21` |
+| [1.2.2](#122)                         | `2020.12.28` |
+| [1.2.1](#121)                         | `2020.12.26` |
+| [1.2.0](#120)                         | `2020.12.25` |
+| [1.1.0](#110)                         | `2020.12.24` |
+| [1.0.1](#101)                         | `2020.12.06` |
+| [1.0.0](#100)                         | `2020.11.30` |
 
-# WIP
+# Work In Progress
 - The mod has been rewritten for easier maintenance & scaling. Single-JAR version agnosticism based on 'reflection spam' has been sacrificed in favor of classic separate JARs tied to specific MC version ranges, but still produced out of a single codebase using preprocessors. An effort will still be made to support as many versions of Minecraft as possible, out of one codebase.
-- Added `Camera Sway` feature - noise-based camera offsets that kick in once you don't move your camera and legs for a short moment. Configurable with `Intensity`, `Frequency`, `Fade-In Delay`, `Fade-In Length`, and `Fade-Out Length`.
+- New `Screen Shakes` feature. Explosions, lightning, thunder, and many other events will now shake players' cameras, using a top-notch implementation featuring simplex noise and exponential decay.
+- New `Camera Sway` feature. Noise-based camera offsets that kick in once you don't move your camera and legs for a short moment. Configurable with `Intensity`, `Frequency`, `Fade-In Delay`, `Fade-In Length`, and `Fade-Out Length`.
 - Completely reworked the `Yaw Delta Roll` feature, now known as `Mouselook Roll`. Configurable in 3 components - `Intensity`, `Accumulation`, and `Decay Smoothness`.
-- Configuration expanded and reworked. Many more separate values now exist for walking, swimming, and elytra flight. The `cameraoverhaul.json` file has been replaced with `cameraoverhaul.toml`, which is much more human-writable, as every present field there is now properly commented. ModMenu-based in-game configuration now makes use of categories.
 - The mod's features now apply when using minecarts, boats, horses, and other rideables. Values for those are configured separately.
+
+**Configuration:**
+- Configuration expanded and reworked. Many more separate values now exist for walking, swimming, and elytra flight. The `cameraoverhaul.json` file has been replaced with `cameraoverhaul.toml`, which is much more human-writable, as every present field there is now properly commented. ModMenu-based in-game configuration now makes use of categories.
 - Added a separate toggle for the mod's effects while in third person.
+
+**Localization:**
 - Russian config localization, courtesy of `@mpustovoi`.
 
 **Fixes:**

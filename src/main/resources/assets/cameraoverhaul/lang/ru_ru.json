@@ -41,5 +41,14 @@
 	"cameraoverhaul.config.cameraSwayFadeInLength.name": "Camera Sway Fade-In Length",
 	"cameraoverhaul.config.cameraSwayFadeInLength.desc": "The amount of time it takes for smooth random sway to fade-in after the player idles for enough time.",
 	"cameraoverhaul.config.cameraSwayFadeOutLength.name": "Camera Sway Fade-Out Length",
-	"cameraoverhaul.config.cameraSwayFadeOutLength.desc": "The amount of time it takes for smooth random sway to fade-out when the player starts moving after idling."
+	"cameraoverhaul.config.cameraSwayFadeOutLength.desc": "The amount of time it takes for smooth random sway to fade-out when the player starts moving after idling.",
+
+	"cameraoverhaul.config.screenShakesMaxIntensity.name": "Screen Shakes Max Intensity",
+	"cameraoverhaul.config.screenShakesMaxIntensity.desc": "Maximum strength of all screen shaking effects.",
+	"cameraoverhaul.config.screenShakesMaxFrequency.name": "Screen Shakes Max Frequency",
+	"cameraoverhaul.config.screenShakesMaxFrequency.desc": "Speed at which screen shaking rotations change direction or oscillate.",
+	"cameraoverhaul.config.explosionTrauma.name": "Explosion Screen Shake Trauma",
+	"cameraoverhaul.config.explosionTrauma.desc": "A [0..1] value linked to the strength of screen shaking caused by explosions.",
+	"cameraoverhaul.config.thunderTrauma.name": "Thunder Screen Shake Trauma",
+	"cameraoverhaul.config.thunderTrauma.desc": "A [0..1] value linked to the strength of screen shaking caused by lightning bolt-tied thunder.",
 }

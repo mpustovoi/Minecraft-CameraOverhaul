@@ -18,6 +18,10 @@ public final class ConfigData {
 		public double cameraSwayFadeInDelay = 0.15;
 		public double cameraSwayFadeInLength = 5.0;
 		public double cameraSwayFadeOutLength = 0.75;
+		// ScreenShakes
+		public double screenShakesMaxIntensity = 2.5;
+		public double screenShakesMaxFrequency = 6.0;
+		public double explosionTrauma = 1.00;
 	}
 	public static final class Contextual {
 		public double strafingRollFactor = 10.0;

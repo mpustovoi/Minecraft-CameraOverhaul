@@ -38,6 +38,8 @@ public final class CameraSystem {
 			return;
 		}
 
+		ScreenShakes.onCameraUpdate(context, deltaTime);
+
 		if (!context.velocity.equals(prevEntityVelocity)) lastEntityMovementTime = time;
 		if (!context.transform.eulerRot.equals(prevCameraEulerRot)) lastCameraMovementTime = time;
 
@@ -57,6 +59,8 @@ public final class CameraSystem {
 	public void modifyCameraTransform(Transform transform) {
 		transform.position.add(offsetTransform.position);
 		transform.eulerRot.add(offsetTransform.eulerRot);
+
+		ScreenShakes.modifyCameraTransform(transform);
 	}
 
 	private static final double BASE_VERTICAL_PITCH_SMOOTHING = 0.00004;

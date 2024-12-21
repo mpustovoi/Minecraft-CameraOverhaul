@@ -14,7 +14,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
     private static final String MIXINS_PACKAGE = "mirsario.cameraoverhaul.mixins";
     private static final String[] MIXINS = new String[] {
         "CameraMixin",
-        "CameraMixinBta",
+		"ExplosionMixin",
         "GameRendererMixin",
     };
 
