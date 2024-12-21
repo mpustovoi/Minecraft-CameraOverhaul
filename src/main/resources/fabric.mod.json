@@ -4,7 +4,7 @@
 	"version": "${mod_version}",
 	"name": "Camera Overhaul",
 	"description": "Makes gameplay more satisfying through the use of various camera tilting.\nConfigurable through the gear button in the top right of ModMenu or through the '.minecraft/config/cameraoverhaul.json' file for finer control.",
-	"license": "MIT",
+	"license": "GPL-3.0-or-later",
 	"icon": "assets/cameraoverhaul/icon.png",
 	"environment": "client",
 
