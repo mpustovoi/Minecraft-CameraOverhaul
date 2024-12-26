@@ -30,6 +30,8 @@ public abstract class LocalPlayerMixin {
 		shake.trauma = (float)Configuration.get().general.handSwingTrauma;
 		shake.frequency = 0.5f;
 		shake.lengthInSeconds = 0.5f;
+
+		CameraOverhaul.camera.notifyOfPlayerAction();
 	}
 }
 //?}

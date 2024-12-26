@@ -15,10 +15,13 @@ public final class CameraSystem {
 	private ConfigData.Contextual ctxCfg;
 	private final Vector3d prevCameraEulerRot = new Vector3d();
 	private final Vector3d prevEntityVelocity = new Vector3d();
-	private double lastCameraMovementTime;
-	private double lastEntityMovementTime;
+	private double lastActionTime;
 	private CameraContext.Perspective prevCameraPerspective;
 	private final Transform offsetTransform = new Transform();
+
+	public void notifyOfPlayerAction() {
+		lastActionTime = TimeSystem.getTime();
+	}
 
 	public void onCameraUpdate(CameraContext context, double deltaTime) {
 		var time = TimeSystem.getTime();
@@ -40,8 +43,8 @@ public final class CameraSystem {
 
 		ScreenShakes.onCameraUpdate(context, deltaTime);
 
-		if (!context.velocity.equals(prevEntityVelocity)) lastEntityMovementTime = time;
-		if (!context.transform.eulerRot.equals(prevCameraEulerRot)) lastCameraMovementTime = time;
+		if (!context.velocity.equals(prevEntityVelocity) || !context.transform.eulerRot.equals(prevCameraEulerRot))
+			notifyOfPlayerAction();
 
 		// X
 		verticalVelocityPitchOffset(context, offsetTransform, deltaTime);
@@ -135,13 +138,12 @@ public final class CameraSystem {
 		double time = TimeSystem.getTime();
 		float noiseX = (float)(time * cfg.general.cameraSwayFrequency);
 
-		var cameraMovedRecently = (time - lastCameraMovementTime) < cfg.general.cameraSwayFadeInDelay;
-		var entityMovedRecently = (time - lastEntityMovementTime) < cfg.general.cameraSwayFadeInDelay;
-		var anythingMovedRecently = cameraMovedRecently || entityMovedRecently;
-		// Only start a fade-in after the last fade-out has ended.
-		if (anythingMovedRecently) {
+		// Fade out if the player turns, moves, or does an interaction.
+		if ((time - lastActionTime) < cfg.general.cameraSwayFadeInDelay) {
 			cameraSwayFactorTarget = 0; // Fade-out
-		} else if (cameraSwayFactor == cameraSwayFactorTarget) {
+		}
+		// Only start a fade-in after the last fade-out has ended.
+		else if (cameraSwayFactor == cameraSwayFactorTarget) {
 			cameraSwayFactorTarget = 1; // Fade-in
 		}
 
