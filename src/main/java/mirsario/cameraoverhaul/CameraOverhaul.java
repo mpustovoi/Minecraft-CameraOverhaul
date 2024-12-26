@@ -11,7 +11,6 @@ public final class CameraOverhaul {
 	public static final Logger LOGGER = LogManager.getLogger("CameraOverhaul");
 
 	public static CameraSystem camera;
-	public static ScreenShakes screenShakes;
 
 	public static void onInitializeClient() {
 		camera = new CameraSystem();

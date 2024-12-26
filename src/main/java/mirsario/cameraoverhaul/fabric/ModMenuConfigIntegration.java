@@ -2,8 +2,8 @@
 // Released under the GNU General Public License 3.0.
 // See LICENSE.md for details.
 
-//? if FABRIC_LOADER && MC_RELEASE
-package mirsario.cameraoverhaul.fabric;
+//? if FABRIC_LOADER && MC_RELEASE {
+/*package mirsario.cameraoverhaul.fabric;*/
 
 import java.lang.reflect.*;
 import me.shedaniel.clothconfig2.api.*;
@@ -94,4 +94,4 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 		catch (Exception e) { CameraOverhaul.LOGGER.trace(e); }
 	}
 }
-//#endif
+//?}
