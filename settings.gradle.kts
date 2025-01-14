@@ -4,20 +4,20 @@ pluginManagement {
 		mavenCentral()
 		gradlePluginPortal()
 		// Stonecutter
-		maven { url = "https://maven.kikugie.dev/snapshots" }
+		maven("https://maven.kikugie.dev/snapshots")
 		// Fabric
-		maven {
-			name = 'Fabric'
-			url = 'https://maven.fabricmc.net/'
-		}
+		maven("https://maven.fabricmc.net")
 	}
 }
 
 plugins {
-	id "dev.kikugie.stonecutter" version "0.4.5" //"0.5-beta.2"
+	id("dev.kikugie.stonecutter") version "0.4.5" //"0.5-beta.2"
 }
 
 stonecutter {
+	kotlinController = true
+	centralScript = "build.gradle.kts"
+
 	shared {
 		vers("fabric-1.14.4", "1.14.4")
 		vers("fabric-1.15", "1.15")
@@ -28,5 +28,5 @@ stonecutter {
 		vcsVersion = "fabric-1.20.6"
 	}
 
-	create rootProject
+	create(rootProject)
 }
