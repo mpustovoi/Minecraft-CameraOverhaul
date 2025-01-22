@@ -3,7 +3,7 @@
 // See LICENSE.md for details.
 
 //? if FABRIC_LOADER && MC_RELEASE {
-/*package mirsario.cameraoverhaul.fabric;*/
+package mirsario.cameraoverhaul.fabric;
 
 import java.lang.reflect.*;
 import me.shedaniel.clothconfig2.api.*;

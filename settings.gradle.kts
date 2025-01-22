@@ -4,6 +4,7 @@ pluginManagement {
 		mavenCentral()
 		gradlePluginPortal()
 		// Stonecutter
+		maven("https://maven.kikugie.dev/releases")
 		maven("https://maven.kikugie.dev/snapshots")
 		// Fabric
 		maven("https://maven.fabricmc.net")
@@ -11,7 +12,7 @@ pluginManagement {
 }
 
 plugins {
-	id("dev.kikugie.stonecutter") version "0.4.5" //"0.5-beta.2"
+	id("dev.kikugie.stonecutter") version "0.6-alpha.5" //"0.5.1" //"0.5-beta.2"
 }
 
 stonecutter {
