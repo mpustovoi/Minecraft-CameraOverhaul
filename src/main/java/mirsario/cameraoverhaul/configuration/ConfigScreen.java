@@ -2,46 +2,29 @@
 // Released under the GNU General Public License 3.0.
 // See LICENSE.md for details.
 
-//? if FABRIC_LOADER && MC_RELEASE {
-package mirsario.cameraoverhaul.fabric;
+package mirsario.cameraoverhaul.configuration;
 
 import java.lang.reflect.*;
 import me.shedaniel.clothconfig2.api.*;
 import mirsario.cameraoverhaul.*;
 import mirsario.cameraoverhaul.abstractions.*;
-import mirsario.cameraoverhaul.configuration.*;
 import net.minecraft.client.*;
-
-// Beyond annoying.
-//? if <=1.17 {
-/*import io.github.prospector.modmenu.api.*;
 import net.minecraft.client.gui.screens.*;
-*///?} else {
-import com.terraformersmc.modmenu.api.*;
-//?}
 
-@SuppressWarnings({ "deprecation", "unused" })
-public class ModMenuConfigIntegration implements ModMenuApi {
-//? if <=1.17 {
-	/*public String getModId() {
-		return CameraOverhaul.MOD_ID;
+@SuppressWarnings("unused")
+public final class ConfigScreen {
+	public static Screen getConfigScreen(Screen parentScreen) {
+		return getConfigBuilder(parentScreen).build();
 	}
 
-	public java.util.function.Function<Screen, ? extends Screen> getConfigScreenFactory() {
-		return screen -> getConfigBuilder().build();
-	}
-*///?}
-
-	@Override
-	public ConfigScreenFactory<?> getModConfigScreenFactory() {
-		return screen -> getConfigBuilder().build();
-	}
-
-	public static ConfigBuilder getConfigBuilder() {
+	public static ConfigBuilder getConfigBuilder(Screen parentScreen) {
 		CameraOverhaul.LOGGER.info("Opening config screen.");
 
+		if (parentScreen == null)
+			parentScreen = Minecraft.getInstance().screen;
+
 		var builder = (ConfigBuilder.create()
-			.setParentScreen(Minecraft.getInstance().screen)
+			.setParentScreen(parentScreen)
 			.setTitle(TextAbstractions.getText("cameraoverhaul.config.title"))
 			.transparentBackground()
 			.setSavingRunnable(Configuration::saveConfig)
@@ -94,4 +77,3 @@ public class ModMenuConfigIntegration implements ModMenuApi {
 		catch (Exception e) { CameraOverhaul.LOGGER.trace(e); }
 	}
 }
-//?}
