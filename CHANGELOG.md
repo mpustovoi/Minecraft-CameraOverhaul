@@ -16,7 +16,13 @@
 | [1.0.0](#100)                         | `2020.11.30` |
 
 # Work In Progress
-- The mod has been rewritten for easier maintenance & scaling. Single-JAR version agnosticism based on 'reflection spam' has been sacrificed in favor of classic separate JARs tied to specific MC version ranges, but still produced out of a single codebase using preprocessors. An effort will still be made to support as many versions of Minecraft as possible, out of one codebase.
+The mod has been rewritten for easier maintenance & scaling. Single-JAR version agnosticism based on 'reflection spam' has been sacrificed in favor of classic separate JARs tied to specific MC version ranges, but still produced out of a single codebase using preprocessors. An effort will still be made to support as many versions of Minecraft as possible, out of one codebase.
+
+**NeoForge & Forge Support:**
+- Introduced official support for **NeoForge**, from `1.20.6` to `1.21.2` and newer!
+- Introduced official support for the now-legacy **Forge**, from `1.17` to `1.20.5`. Pull Requests adding support for even older versions are welcome.
+
+**Features:**
 - New `Screen Shakes` feature. Explosions, lightning, thunder, and many other events will now shake players' cameras, using a top-notch implementation featuring simplex noise and exponential decay.
 - New `Camera Sway` feature. Noise-based camera offsets that kick in once you don't move your camera and legs for a short moment. Configurable with `Intensity`, `Frequency`, `Fade-In Delay`, `Fade-In Length`, and `Fade-Out Length`.
 - Completely reworked the `Yaw Delta Roll` feature, now known as `Mouselook Roll`. Configurable in 3 components - `Intensity`, `Accumulation`, and `Decay Smoothness`.
