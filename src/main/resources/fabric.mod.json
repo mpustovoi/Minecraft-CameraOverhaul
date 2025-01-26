@@ -3,20 +3,14 @@
 	"id": "${mod_id}",
 	"name": "${mod_name}",
 	"version": "${mod_version}",
-	"description": "${mod_description}",
 	"license": "GPL-3.0-or-later",
-	"icon": "icon.png",
 	"environment": "client",
+	"icon": "icon.png",
 
-	"authors": [
-		"Mirsario"
-	],
+	"description": "${mod_description_esc}",
 
-	"contributors": [
-		"altrisi",
-		"IMS212",
-		"TheMrEngMan"
-	],
+	"authors": ${mod_authors_jarray},
+	"contributors": ${mod_contributors_jarray},
 
 	"contact": {
 		"homepage": "${contact_homepage}",

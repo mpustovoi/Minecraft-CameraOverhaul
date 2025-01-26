@@ -28,8 +28,8 @@ architectury.common(stonecutter.tree.branches.mapNotNull {
 
 val minecraft = stonecutter.current.version
 val loader = loom.platform.get().name.lowercase()
-val mcType = required("mc.type").toString()
-val mcVersion = required("mc.version").toString()
+val mcType = required("mc.type")
+val mcVersion = required("mc.version")
 val isFabric = loader == "fabric"
 val isForge = loader == "forge"
 val isNeoForge = loader == "neoforge"
@@ -117,7 +117,7 @@ dependencies {
 }
 
 loom {
-	//accessWidenerPath = rootProject.file("src/main/resources/${project.required("mod.id")}.accesswidener")
+	//accessWidenerPath = rootProject.file("src/main/resources/${required("mod.id")}.accesswidener")
 
 	decompilers {
 		get("vineflower").apply { // Adds names to lambdas - useful for mixins
@@ -125,26 +125,36 @@ loom {
 		}
 	}
 	if (loader == "forge") {
-		forge.mixinConfigs("${project.required("mod.id")}.mixins.json")
+		forge.mixinConfigs("${required("mod.id")}.mixins.json")
 	}
 }
 
 tasks.processResources {
-	var properties = mapOf(
-		"mod_id" to project.required("mod.id"),
-		"mod_name" to project.required("mod.name"),
-		"mod_description" to project.required("mod.description"),
-		"mod_version" to project.required("mod.version"),
-		"mod_author" to project.required("mod.author"),
-		"mc_version_range" to project.required("mc.version_range"),
-		"contact_homepage" to project.required("contact.homepage"),
-		"contact_sources" to project.required("contact.sources"),
-		"contact_issues" to project.required("contact.issues"),
-		"contact_email" to project.required("contact.email"),
-		"mods_clothconfig_range" to project.required("mods.clothconfig.range"),
+	fun plainList(str: String) = str.split("\\s+".toRegex()).joinToString(", ") { it.trim() }
+	fun fancyList(str: String) = str.split("\\s+".toRegex()).joinToString("\n") { "- ${it.trim()}" }
+	fun jsonList(str: String) = "[ ${str.split("\\s+".toRegex()).joinToString(", ") { "\"${it.trim()}\"" }} ]"
+
+    var properties = mapOf(
+		"mod_id" to required("mod.id"),
+		"mod_name" to required("mod.name"),
+		"mod_description" to required("mod.description"),
+		"mod_description_esc" to required("mod.description").replace("\n", "\\n"),
+		"mod_version" to required("mod.version"),
+		"mod_authors" to plainList(required("mod.authors")),
+		"mod_authors_list" to fancyList(required("mod.authors")),
+		"mod_authors_jarray" to jsonList(required("mod.authors")),
+		"mod_contributors" to plainList(required("mod.contributors")),
+		"mod_contributors_list" to fancyList(required("mod.contributors")),
+		"mod_contributors_jarray" to jsonList(required("mod.contributors")),
+		"mc_version_range" to required("mc.version_range"),
+		"contact_homepage" to required("contact.homepage"),
+		"contact_sources" to required("contact.sources"),
+		"contact_issues" to required("contact.issues"),
+		"contact_email" to required("contact.email"),
+		"mods_clothconfig_range" to required("mods.clothconfig.range"),
 	)
 	if (isFabric) properties = properties.plus(mapOf(
-		"mods_modmenu_range" to project.required("mods.modmenu.range"),
+		"mods_modmenu_range" to required("mods.modmenu.range"),
 	))
 
 	fun expandLoaderFile(include: Boolean, pattern: String) = filesMatching(pattern) { if (!include) exclude() else expand(properties) }
