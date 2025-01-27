@@ -38,8 +38,8 @@ val shadowLibs = isForge && stonecutter.eval(mcVersion, "<1.19")
 
 base {
 	group = required("maven_group")
-	version = "v${required("mod.version")}-${loader}+mc${required("mc.displayed_range")}"
-	archivesName.set(required("archives_base_name").toString())
+	version = "v${required("mod.version")}-${loader}+mc[${required("mc.displayed_range")}]"
+	archivesName.set(required("archives_base_name"))
 }
 
 // Configure Java.
@@ -130,27 +130,37 @@ loom {
 }
 
 tasks.processResources {
-	fun plainList(str: String) = str.split("\\s+".toRegex()).joinToString(", ") { it.trim() }
-	fun fancyList(str: String) = str.split("\\s+".toRegex()).joinToString("\n") { "- ${it.trim()}" }
-	fun jsonList(str: String) = "[ ${str.split("\\s+".toRegex()).joinToString(", ") { "\"${it.trim()}\"" }} ]"
+	fun plainList(str: String) = str.lines().joinToString(", ") { it.trim() }
+	fun fancyList(str: String) = str.lines().joinToString("\n") { "- ${it.trim()}" }
+	fun jsonList(str: String) = str.lines().joinToString(", ") { "\"${it.trim()}\"" }
 
+	val version = "${required("mod.version")}-${loader}+mc.${required("mc.displayed_range")}"
     var properties = mapOf(
 		"mod_id" to required("mod.id"),
 		"mod_name" to required("mod.name"),
 		"mod_description" to required("mod.description"),
 		"mod_description_esc" to required("mod.description").replace("\n", "\\n"),
-		"mod_version" to required("mod.version"),
+		"mod_version" to version,
 		"mod_authors" to plainList(required("mod.authors")),
 		"mod_authors_list" to fancyList(required("mod.authors")),
 		"mod_authors_jarray" to jsonList(required("mod.authors")),
 		"mod_contributors" to plainList(required("mod.contributors")),
 		"mod_contributors_list" to fancyList(required("mod.contributors")),
 		"mod_contributors_jarray" to jsonList(required("mod.contributors")),
+		"mod_forgeupdatecheckurl" to required("mod.forgeupdatecheckurl"),
 		"mc_version_range" to required("mc.version_range"),
+		// Contact (Mod)
 		"contact_homepage" to required("contact.homepage"),
 		"contact_sources" to required("contact.sources"),
 		"contact_issues" to required("contact.issues"),
+		"contact_modrinth" to optional("contact.modrinth"),
+		"contact_curseforge" to optional("contact.curseforge"),
+		// Contact (Author)
 		"contact_email" to required("contact.email"),
+		"contact_discord" to optional("contact.discord"),
+		"contact_patreon" to optional("contact.patreon"),
+		"contact_youtube" to optional("contact.youtube"),
+		// Libraries
 		"mods_clothconfig_range" to required("mods.clothconfig.range"),
 	)
 	if (isFabric) properties = properties.plus(mapOf(

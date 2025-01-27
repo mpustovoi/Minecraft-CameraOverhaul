@@ -9,8 +9,8 @@
 
 	"description": "${mod_description_esc}",
 
-	"authors": ${mod_authors_jarray},
-	"contributors": ${mod_contributors_jarray},
+	"authors": [ ${mod_authors_jarray} ],
+	"contributors": [ ${mod_contributors_jarray} ],
 
 	"contact": {
 		"homepage": "${contact_homepage}",
@@ -36,5 +36,18 @@
 	
 	"recommends": {
 		"fabricloader": ">=0.4.0"
+	},
+
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.modrinth": "${contact_modrinth}",
+				"modmenu.curseforge": "${contact_curseforge}",
+				"modmenu.discord": "${contact_discord}",
+				"modmenu.patreon": "${contact_patreon}",
+				"modmenu.youtube": "${contact_youtube}"
+			},
+			"update_checker": true
+		}
 	}
 }
