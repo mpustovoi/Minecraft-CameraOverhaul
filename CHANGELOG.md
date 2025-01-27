@@ -2,20 +2,24 @@
 (Click on version number to jump to its changelog.)
 
 | Version                               | Release Date |
-|---------------------------------------| ------------ |
+|---------------------------------------|--------------|
 | [Work In Progress](#work-in-progress) | `n/a`        |
-| [1.4.1](#141)                         | `2024.06.18` |
-| [1.4.0](#140)                         | `2022.12.27` |
-| [1.3.1](#131)                         | `2022.07.23` |
-| [1.3.0](#130)                         | `2021.10.21` |
-| [1.2.2](#122)                         | `2020.12.28` |
-| [1.2.1](#121)                         | `2020.12.26` |
-| [1.2.0](#120)                         | `2020.12.25` |
-| [1.1.0](#110)                         | `2020.12.24` |
-| [1.0.1](#101)                         | `2020.12.06` |
-| [1.0.0](#100)                         | `2020.11.30` |
+| [2.0.0](#200)                         | `2025-01-27` |
+| [1.4.1](#141)                         | `2024-06-18` |
+| [1.4.0](#140)                         | `2022-12-27` |
+| [1.3.1](#131)                         | `2022-07-23` |
+| [1.3.0](#130)                         | `2021-10-21` |
+| [1.2.2](#122)                         | `2020-12-28` |
+| [1.2.1](#121)                         | `2020-12-26` |
+| [1.2.0](#120)                         | `2020-12-25` |
+| [1.1.0](#110)                         | `2020-12-24` |
+| [1.0.1](#101)                         | `2020-12-06` |
+| [1.0.0](#100)                         | `2020-11-30` |
 
 # Work In Progress
+Nothing yet!
+
+# 2.0.0
 The mod has been rewritten for easier maintenance & scaling. Single-JAR version agnosticism based on 'reflection spam' has been sacrificed in favor of classic separate JARs tied to specific MC version ranges, but still produced out of a single codebase using preprocessors. An effort will still be made to support as many versions of Minecraft as possible, out of one codebase.
 
 **NeoForge & Forge Support:**
@@ -36,8 +40,13 @@ The mod has been rewritten for easier maintenance & scaling. Single-JAR version 
 - Russian config localization, courtesy of `@mpustovoi`.
 
 **Fixes:**
-- Fixed the mod using incorrect values for time deltas. Oopsie doopsie.
+- Fixed the mod using incorrect values for time deltas, leading to less smooth interpolation. Oopsie doopsie!
+- Fixed issue [#16](https://github.com/Mirsario/Minecraft-CameraOverhaul/issues/16) (Strafing affects elytra in a very jiggery manner).
+- Fixed issue [#34](https://github.com/Mirsario/Minecraft-CameraOverhaul/issues/34) (The Configure button doesn't show up in Mod Menu).
+- Fixed issue [#36](https://github.com/Mirsario/Minecraft-CameraOverhaul/issues/36) (Cannot read field "enabled" because "config" is null).
+- Fixed issue [#40](https://github.com/Mirsario/Minecraft-CameraOverhaul/issues/40) (Better Third Person Incompatibility).
 - Fixed issue [#43](https://github.com/Mirsario/Minecraft-CameraOverhaul/issues/43) (Toggling perspective (F5) causes camera to shake).
+- Fixed issue [#57](https://github.com/Mirsario/Minecraft-CameraOverhaul/issues/57) (View rocks side to side when going across a ice block highway with boat).
 - Fixed the camera sometimes shaking when riding in the second seat of a boat in multiplayer.
 
 # 1.4.1
