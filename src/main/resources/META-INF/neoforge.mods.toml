@@ -12,6 +12,7 @@ description = """
 ${mod_description}
 """
 credits = """
+Created by ${mod_authors}
 Contributors:
 ${mod_contributors_list}
 """
