@@ -49,10 +49,10 @@ public class MixinPlugin implements IMixinConfigPlugin {
             String mixinClassName = MIXINS_PACKAGE + "." + mixin;
             try {
                 Class.forName(mixinClassName, false, getClass().getClassLoader());
-                CameraOverhaul.LOGGER.info("Applying present mixin: '{}'.", mixinClassName);
+                CameraOverhaul.LOGGER.debug("Applying present mixin: '{}'.", mixinClassName);
                 list.add(mixin);
             } catch (ClassNotFoundException ignored) {
-                CameraOverhaul.LOGGER.info("Skipping missing mixin: '{}'.", mixinClassName);
+                CameraOverhaul.LOGGER.debug("Skipping missing mixin: '{}'.", mixinClassName);
             }
         }
 
