@@ -4,6 +4,7 @@
 | Version                               | Release Date |
 |---------------------------------------|--------------|
 | [Work In Progress](#work-in-progress) | `n/a`        |
+| [2.0.1](#201)                         | `2025-01-29` |
 | [2.0.0](#200)                         | `2025-01-27` |
 | [1.4.1](#141)                         | `2024-06-18` |
 | [1.4.0](#140)                         | `2022-12-27` |
@@ -20,6 +21,9 @@
 
 **Localization:**
 - German localization by `@Lucanoria` ([PR #70](<https://github.com/Mirsario/Minecraft-CameraOverhaul/pull/70>)).
+
+# 2.0.1
+Hotfix for a 'InvocationTargetException: null' 1.18.x Forge crash.
 
 # 2.0.0
 The mod has been rewritten for easier maintenance & scaling. Single-JAR version agnosticism based on 'reflection spam' has been sacrificed in favor of classic separate JARs tied to specific MC version ranges, but still produced out of a single codebase using preprocessors. An effort will still be made to support as many versions of Minecraft as possible, out of one codebase.

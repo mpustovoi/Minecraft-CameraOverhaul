@@ -9,7 +9,7 @@ import mirsario.cameraoverhaul.*;
 import mirsario.cameraoverhaul.configuration.*;
 import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.*;
-//? if >=1.19.0 {
+//? if >=1.18.0 {
 import net.minecraftforge.client.*;
 //?} else {
 /^import net.minecraftforge.fmlclient.*;
